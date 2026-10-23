@@ -124,10 +124,16 @@ def inspect_csv(path: Path) -> tuple[dict[str, Any], dict[str, int], pd.Series |
 
 def make_calendar_plot(calendar_path: Path) -> None:
     """Plot observed calendar coverage by year from the real calendar file."""
-    calendar = pd.read_csv(calendar_path, parse_dates=["date"])
-    if "date" not in calendar.columns:
+    header = pd.read_csv(calendar_path, nrows=0)
+    if "date" not in header.columns:
+        print("Calendar plot skipped: calendar.csv has no 'date' column.")
         return
-    yearly_days = calendar.dropna(subset=["date"]).groupby(calendar["date"].dt.year).size()
+    calendar = pd.read_csv(calendar_path, parse_dates=["date"])
+    dates = calendar["date"].dropna()
+    if dates.empty:
+        print("Calendar plot skipped: no valid dates were found.")
+        return
+    yearly_days = dates.groupby(dates.dt.year).size()
     FIG_DIR.mkdir(parents=True, exist_ok=True)
     fig, ax = plt.subplots(figsize=(8.5, 4.5), constrained_layout=True)
     yearly_days.plot(kind="bar", ax=ax)
@@ -142,6 +148,10 @@ def make_calendar_plot(calendar_path: Path) -> None:
 def make_sales_plot(calendar_path: Path, daily_total: pd.Series | None) -> None:
     """Plot aggregated daily sales only when real sales and calendar files exist."""
     if daily_total is None or not calendar_path.is_file():
+        return
+    header = pd.read_csv(calendar_path, nrows=0)
+    if not {"date", "d"}.issubset(header.columns):
+        print("Sales plot skipped: calendar.csv must contain 'date' and 'd' columns.")
         return
     calendar = pd.read_csv(calendar_path, usecols=["date", "d"], parse_dates=["date"])
     mapping = calendar.set_index("d")["date"]
