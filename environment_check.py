@@ -147,6 +147,7 @@ def main() -> int:
         if not packages[name]["installed"] or not packages[name]["import_ok"]
     ]
 
+    cuda = torch_report()
     report = {
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "python": {
@@ -156,7 +157,7 @@ def main() -> int:
             "platform": platform.platform(),
         },
         "packages": packages,
-        "pytorch_cuda": torch_report(),
+        "pytorch_cuda": cuda,
         "nvidia_smi": nvidia_smi_report(),
         "research_configuration": {
             "target_max_gpu_memory_gb": 4.0,
@@ -170,7 +171,7 @@ def main() -> int:
         "readiness": {
             "core_dependencies_ready": len(missing_or_broken) == 0,
             "missing_or_broken_packages": missing_or_broken,
-            "cuda_available": bool(torch_report().get("cuda_available", False)),
+            "cuda_available": bool(cuda.get("cuda_available", False)),
         },
     }
 
