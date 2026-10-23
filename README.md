@@ -56,6 +56,14 @@ python environment_check.py
 
 The command reports Python/package versions, PyTorch/CUDA availability, GPU details when available, and writes a machine-specific report to `results/environment_report.json`. CUDA is not mandatory; CPU fallback is supported. A successful check validates only the software environment, not the research experiment.
 
-## Before the data phase
+## Phase 2 — Inspect the actual data
 
-The M5 data files are not in this repository. Obtain them from the official [Kaggle M5 Forecasting Accuracy competition](https://www.kaggle.com/competitions/m5-forecasting-accuracy/data) after accepting its rules, or another properly licensed source. Put the needed original CSVs in `data/raw/` locally. Do not commit the raw CSVs or Kaggle credentials to GitHub. After Phase 1 is verified, inspect the actual files and produce a dataset report before implementing the forecasting pipeline.
+The M5 files are not included in this repository. Obtain them from the official [Kaggle M5 Forecasting Accuracy competition](https://www.kaggle.com/competitions/m5-forecasting-accuracy/data) after accepting its rules, or another source whose terms permit your use. Place the available original CSVs in `data/raw/` locally; do not commit them or Kaggle credentials.
+
+After Phase 1 is checked, run:
+
+```powershell
+python dataset_inspection.py
+```
+
+The script scans the files it actually finds in chunks and writes `results/dataset_report.txt`, `results/dataset_report.csv`, `results/dataset_missing_by_column.csv`, and diagnostic plots under `results/figures/`. Missing files are explicitly reported. These are data-inspection artifacts, not model results. If no M5 CSV is found, the script reports that state and stops without manufacturing sample data.
