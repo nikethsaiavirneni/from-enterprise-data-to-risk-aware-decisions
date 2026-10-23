@@ -1,0 +1,25 @@
+# Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Credentials — never commit Kaggle API keys
+kaggle.json
+.kaggle/
+.env
+.env.*
+
+# M5 competition data is subject to Kaggle competition terms.
+# Keep raw dataset files local; do not commit the CSVs.
+data/raw/*
+!data/raw/.gitkeep
+
+# Local datasets, models, and machine-specific environment report
+data/processed/
+data/features/
+models/
+results/environment_report.json
