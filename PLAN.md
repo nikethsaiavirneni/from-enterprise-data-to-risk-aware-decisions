@@ -135,24 +135,27 @@ of prediction. Split dates get documented.
 
 ## 5. What you need to do before Phase 2
 
-The Walmart data is not on this computer. I searched the whole D drive, E drive,
-Downloads, Desktop, Documents and OneDrive. It is not there.
+**Current verification status:** M5 raw files are not committed to this GitHub repository, and their presence on the user's current Windows computer has not been verified in this session. A previously recorded D-drive search from August 2026 is historical and must not be treated as a fresh check.
 
-Since we chose the download-script option, you need a Kaggle API token:
+### First: verify Phase 1 locally
 
-1. Go to kaggle.com and sign in
-2. Click your profile picture, then **Settings**
-3. Scroll to the **API** section, click **Create New Token**
-4. A file called `kaggle.json` downloads
-5. Move it to: `C:\Users\avirn\.kaggle\kaggle.json`
-6. On the Kaggle page for the M5 Forecasting Accuracy competition, click **Join
-   Competition** and accept the rules — downloads fail without this
+From the project root, in Windows PowerShell:
 
-Then tell me, and the download script runs.
+```powershell
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python environment_check.py
+```
 
-Phase 1 does not need the data, so it can start immediately.
+The environment report is written to `results/environment_report.json`. Share its output before proceeding if any dependency is missing or broken. CUDA is useful but optional because CPU fallback is supported.
 
----
+### Then: verify or obtain the M5 data
+
+The official Kaggle M5 page lists `calendar.csv`, `sales_train_validation.csv`, `sales_train_evaluation.csv`, `sell_prices.csv`, and `sample_submission.csv`. The competition page requires agreement to its rules for access to the files. See the official [Kaggle M5 Forecasting Accuracy data page](https://www.kaggle.com/competitions/m5-forecasting-accuracy/data).
+
+Do not commit raw competition CSVs or Kaggle credentials to GitHub. Place permitted files under `data/raw/` locally. Only after the actual files are present should Phase 2 report filenames, sizes, dimensions, types, missing values, date range, product/store counts, and generated exploratory plots.
 
 ## 6. Hardware and environment — what is actually on this machine
 
@@ -286,8 +289,8 @@ forecast, actual, error, risk, priority, and recommendation.
 
 | Phase | What happens | Status |
 |---|---|---|
-| 1 | Folders, `requirements.txt`, `environment_check.py`, install PyTorch, run the check | **Next** |
-| 2 | Download data, inspect it for real, produce `dataset_report.txt` / `.csv` and plots | Blocked on Kaggle token |
+| 1 | `requirements.txt` and `environment_check.py` committed; install and run locally | **Code ready; local check pending** |
+| 2 | Confirm local M5 files or obtain them through an authorized source; inspect and report actual schema | **Pending Phase 1 and local data check** |
 | 3 | Preprocessing | Not started |
 | 4 | Feature engineering — two versions, 1-day and 28-day | Not started |
 | — | pytest tests, actually run | Not started |
