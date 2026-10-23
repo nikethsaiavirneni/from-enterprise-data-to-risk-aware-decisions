@@ -1,50 +1,36 @@
-# AI-Integrated Data Analytics for Strategic Decision Intelligence
+# Knowledge-Grounded AI Decision Optimizer
 
-A Human-Centered Framework for Risk-Aware and Resilient Decision Support
+**Research focus:** AI-Integrated Data Analytics for Strategic Decision Intelligence — a human-centered framework for risk-aware and resilient decision support.
 
 Mini research project — DBA 802 Data Analytics and Strategic Decision Intelligence.
 
----
+## Research idea
 
-## Status
+Use the real Walmart M5 sales dataset to forecast demand, explain predictions, assess forecast risk, and convert the evidence into decision recommendations. Evaluate whether risk-aware decisions perform better than decisions based on forecasts alone.
 
-**Planning stage. No code written. No experiments run. No results exist.**
+**Core argument:** a prediction is not a decision.
 
----
+## Current status
 
-## The idea
-
-Real Walmart sales data (M5) → forecast demand → explain the forecast → measure its
-uncertainty → convert that into a risk level → convert that into a decision a manager
-could act on → then test whether the risk-aware decisions actually cost less than acting
-on the raw forecast.
-
-The argument of the paper: **a prediction is not a decision.**
-
----
+This repository contains the project plan and original project instructions. The experimental pipeline must be implemented and run against the actual M5 dataset before empirical findings can be reported. Do not treat synthetic demonstration outputs or unrun experiments as research evidence.
 
 ## Documents
 
-| File | What it is |
+| File | Purpose |
 |---|---|
-| [PLAN.md](PLAN.md) | The working plan in plain language — decisions, rules, phases, status |
-| [PROMPT.md](PROMPT.md) | The original project instructions, stored word-for-word |
+| [PLAN.md](PLAN.md) | Project plan, decisions, phases, and status |
+| [PROMPT.md](PROMPT.md) | Original project instructions, retained as the source of truth |
 
 Start with [PLAN.md](PLAN.md).
 
----
-
 ## Ground rules
 
-1. Nothing is fabricated — no invented numbers, results, or citations
-2. Every number in the paper traces to a file the code actually produced
-3. Chronological time-series splits only, no leakage
-4. Stays within 4 GB GPU memory on an RTX 3060 Laptop (6 GB card)
-5. Windows / PowerShell
+1. Never fabricate numbers, results, or citations.
+2. Every reported number must trace to an output actually produced by the code.
+3. Use chronological time-series splits and prevent data leakage.
+4. Target approximately 4 GB maximum GPU memory use on an RTX 3060 with 6 GB VRAM.
+5. Use Windows and PowerShell-compatible setup instructions.
 
----
+## Before the data phase
 
-## Before the data phase can run
-
-The M5 files are not in this repository. A Kaggle API token is required — setup steps are
-in [PLAN.md](PLAN.md) section 5.
+The M5 data files are not confirmed to be present in this repository. Follow the dataset acquisition and verification instructions in [PLAN.md](PLAN.md) before running experiments.
