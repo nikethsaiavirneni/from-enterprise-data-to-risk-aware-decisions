@@ -1,0 +1,14 @@
+# Core data science and model packages
+numpy>=1.26,<3
+pandas>=2.1,<4
+scikit-learn>=1.4,<2
+xgboost>=2.0,<4
+shap>=0.45,<1
+matplotlib>=3.8,<4
+
+# Deep learning. Pip selects a compatible build for your environment.
+# For specific CUDA wheels, follow the official PyTorch installation selector.
+torch>=2.2,<3
+
+# Testing
+pytest>=8,<10
