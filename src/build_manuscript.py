@@ -126,10 +126,6 @@ RS = "recent sales (lags, rolling)"
 doc = Document()
 sec = doc.sections[0]
 sec.left_margin = sec.right_margin = sec.top_margin = sec.bottom_margin = Inches(1)
-ln = OxmlElement("w:lnNumType")
-ln.set(qn("w:countBy"), "1")
-ln.set(qn("w:restart"), "continuous")
-sec._sectPr.append(ln)
 st = doc.styles["Normal"]
 st.font.name, st.font.size = "Times New Roman", Pt(12)
 st.element.rPr.rFonts.set(qn("w:eastAsia"), "Times New Roman")
@@ -171,18 +167,24 @@ def runs(p, text, size=None, bold=False):
             r.font.size = Pt(size)
 
 
-def P(text, align=None, bold=False, size=None, single=False, indent=True):
+def P(text, align=None, bold=False, size=None, single=False, indent=False):
     p = doc.add_paragraph()
     runs(p, text, size, bold)
     if align:
         p.alignment = align
+    elif not bold:                       # justify running body text
+        p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+        if not single:                   # first-line indent marks each body paragraph
+            p.paragraph_format.first_line_indent = Inches(0.3)
     if single:
         p.paragraph_format.line_spacing = 1.0
     return p
 
 
 def H1(t):
-    P(t, bold=True)
+    p = P(t, bold=True)
+    p.paragraph_format.space_before = Pt(6)
+    return p
 
 
 def H2(t):
@@ -578,7 +580,8 @@ for i, k in enumerate(order, 1):
 unused = set(REFS) - set(order)
 assert not unused, f"uncited references: {unused}"
 
-doc.save(PAPER / "manuscript.docx")
+import os
+doc.save(PAPER / os.environ.get("MS_OUT", "manuscript.docx"))
 
 # ---- highlights (3-5 bullets, <= 85 characters) ----------------------------------------
 HL = [
