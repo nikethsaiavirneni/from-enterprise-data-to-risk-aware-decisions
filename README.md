@@ -42,6 +42,20 @@ The research design is being refined. The M5 data files, code execution, model t
 6. State all inventory cost assumptions explicitly and test sensitivity to them.
 7. Do not claim the risk score is calibrated uncertainty unless calibration is demonstrated.
 
+## Phase 1 — Environment check
+
+Use Windows PowerShell from the repository root:
+
+```powershell
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python environment_check.py
+```
+
+The command reports Python/package versions, PyTorch/CUDA availability, GPU details when available, and writes a machine-specific report to `results/environment_report.json`. CUDA is not mandatory; CPU fallback is supported. A successful check validates only the software environment, not the research experiment.
+
 ## Before the data phase
 
-The M5 data files must be verified in the actual working folder. Follow [PLAN.md](PLAN.md) before implementing assumptions about the dataset or reporting results.
+The M5 data files are not in this repository. Obtain them from the official [Kaggle M5 Forecasting Accuracy competition](https://www.kaggle.com/competitions/m5-forecasting-accuracy/data) after accepting its rules, or another properly licensed source. Put the needed original CSVs in `data/raw/` locally. Do not commit the raw CSVs or Kaggle credentials to GitHub. After Phase 1 is verified, inspect the actual files and produce a dataset report before implementing the forecasting pipeline.
