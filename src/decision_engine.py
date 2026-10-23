@@ -110,6 +110,11 @@ def evaluate(sid, y, f, cal, ratios=RATIOS, boot=BOOT, seed=SEED):
                 b = 1 - tot[k][draws].sum(1) / tot["point"][draws].sum(1)
                 row.update(reduction_vs_point=rel, ci_low=np.quantile(b, .025),
                            ci_high=np.quantile(b, .975))
+                if k == "risk_aware":   # extra comparison against the stronger global-correction policy
+                    relg = 1 - tot[k].sum() / tot["global"].sum()
+                    bg = 1 - tot[k][draws].sum(1) / tot["global"][draws].sum(1)
+                    row.update(reduction_vs_global=relg, g_ci_low=np.quantile(bg, .025),
+                               g_ci_high=np.quantile(bg, .975))
             rows.append(row)
     return pd.DataFrame(rows)
 

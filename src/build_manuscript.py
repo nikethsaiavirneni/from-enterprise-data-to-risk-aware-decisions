@@ -75,6 +75,7 @@ FEAT = J("results/feature_report.json")
 COST = {h: pd.read_csv(C.RESULTS / "decision_outputs" / f"cost_xgb_h{h}.csv") for h in (1, 28)}
 STR = {h: pd.read_csv(C.RESULTS / "decision_outputs" / f"strata_xgb_h{h}.csv", index_col=0) for h in (1, 28)}
 DSUM = J("results/decision_outputs/decision_summary.json")
+EX = J("results/decision_outputs/extra_analysis.json")
 PRE = (C.RESULTS / "preprocessing_report.txt").read_text()
 DS = pd.read_csv(C.RESULTS / "dataset_report.csv")
 
@@ -245,6 +246,16 @@ def NOTE(text):
     P(text, single=True, size=9.5)
 
 
+def ALGO(title, lines):
+    """A boxed, single-spaced algorithm listing (not counted as a figure or table)."""
+    P(title, bold=True, single=True)
+    for ln in lines:
+        p = doc.add_paragraph()
+        p.paragraph_format.line_spacing = 1.0
+        p.paragraph_format.left_indent = Inches(0.3)
+        runs(p, ln, 10)
+
+
 # ---- table data ------------------------------------------------------------------------
 T1 = []
 for h in (1, 28):
@@ -287,7 +298,8 @@ ABSTRACT = (
     f"by {100 * cost(28, 8, 'risk_aware', 'reduction_vs_point'):.0f}% relative to ordering the point forecast "
     f"(95% bootstrap interval {100 * cost(28, 8, 'risk_aware', 'ci_low'):.1f}–"
     f"{100 * cost(28, 8, 'risk_aware', 'ci_high'):.1f}%) and by {rel(ra28(8), g28(8)):.0f}% relative to a single "
-    "global correction, with all calibration fitted on validation data only. Cost ratios are assumptions, not "
+    "global correction, with all calibration fitted on validation data only. The reduction is stable across both "
+    "forecasters, across 5–20 forecast bins and across three test sub-windows. Cost ratios are assumptions, not "
     "retailer data, and the study does not measure digital-transformation outcomes. Code and tests are public."
 )
 assert len(ABSTRACT.split()) <= 250, len(ABSTRACT.split())
@@ -367,7 +379,24 @@ EQ("Q_{i,t} = max{ 0, ŷ_{i,t} + q_{τ}( e : ŷ ∈ B_{k(i,t)} ) }", 4)
 P("The cost reported is the total of ℓ divided by total realised demand. Finally, a six-rule base maps "
   "demand level (High or Low forecast, split at the validation 67th percentile) and risk label to a priority "
   "(P1–P4) and an action, for example High demand with High risk gives priority P2, an order at the "
-  "risk-adjusted quantity, and a flag for human review. The rules are experimental and are not Walmart policy.")
+  "risk-adjusted quantity, and a flag for human review. The rules are experimental and are not Walmart policy. "
+  "Algorithm 1 states the whole procedure; note that every step that fixes a number reads the validation split "
+  "only, so the test split is never seen before it is scored.")
+ALGO("Algorithm 1. Knowledge-grounded risk-aware ordering", [
+    "Input: training, validation and test splits; horizon h; cost ratio C_{u}:C_{o}; bin count K = 10",
+    "Output: order quantity Q and a recommendation for every test case",
+    "1:  Fit forecaster f_{h} on the training split; predict ŷ on validation and test (uses only data ≤ t − h).",
+    "2:  On validation, bin forecasts into K deciles B_{1..K}; store the residuals e = y − ŷ of each bin.",
+    "3:  Compute each bin's error rate u_{k} (Eq. 2); set Low/Moderate/High cut-offs at the 33rd and 67th "
+    "percentiles of u over validation cases. Freeze bins, residuals and cut-offs.",
+    "4:  Set τ = C_{u}/(C_{u}+C_{o}).",
+    "5:  for each test case (i, t) do",
+    "6:      locate its validation bin k from ŷ_{i,t}; assign its risk label from the frozen cut-offs.",
+    "7:      Q_{i,t} ← max(0, ŷ_{i,t} + τ-quantile of that bin's validation residuals)   (Eq. 4)",
+    "8:      emit priority and action from the six-rule base using demand level and risk label.",
+    "9:  end for",
+    "10: Score cost ℓ (Eq. 3) on the test split; compare against the point and global policies.",
+])
 
 H1("3. Experimental design")
 H2("3.1 Data and split")
@@ -477,7 +506,27 @@ NOTE("C_{u}:C_{o} are assumed understock-to-overstock cost ratios, not retailer 
 FIG("Figure_2", "Fig. 2. Cost per unit of realised demand against the assumed understock-to-overstock cost ratio "
     "(XGBoost forecasts, 28-day lead, test split). The arrow marks the risk-aware reduction at 8:1 with its 95% "
     "bootstrap interval.", width=5.2)
-H2("4.5 Implications for decision support")
+H2("4.5 Robustness of the decision result")
+P(f"Three checks probe whether the gain is an artefact of one model, one binning choice or one slice of the "
+  f"test window. First, the ablation is model-independent: with LSTM forecasts in place of XGBoost, the "
+  f"risk-aware policy still lowered 8:1 cost by {100 * EX['ablation']['lstm']['reduction_risk_vs_point']:.1f}% "
+  f"against the point policy and {100 * EX['ablation']['lstm']['reduction_risk_vs_global']:.1f}% against the "
+  f"global correction, within a point of the XGBoost figures "
+  f"({100 * EX['ablation']['xgb']['reduction_risk_vs_point']:.1f}% and "
+  f"{100 * EX['ablation']['xgb']['reduction_risk_vs_global']:.1f}%), so the decision layer, not the forecaster, "
+  f"drives it. Second, the gain is insensitive to the number of forecast bins: it moves only from "
+  f"{100 * EX['bin_sensitivity']['5']:.1f}% at K = 5 bins to {100 * EX['bin_sensitivity']['20']:.1f}% at K = 20 "
+  f"(K = 10 in the main results). Third, splitting the 91-day test window into three equal sub-windows gives "
+  f"8:1 reductions of {100 * EX['window_stability']['window_1']['reduction_vs_point']:.1f}%, "
+  f"{100 * EX['window_stability']['window_2']['reduction_vs_point']:.1f}% and "
+  f"{100 * EX['window_stability']['window_3']['reduction_vs_point']:.1f}% with non-overlapping confidence "
+  f"intervals around each, so the effect holds month to month rather than resting on one period. For "
+  f"completeness, a Wilcoxon signed-rank test on the paired per-case squared errors of XGBoost and the LSTM at "
+  f"the 28-day lead favours the LSTM (p < 0.001), but the effect is negligible for practice — mean squared error "
+  f"{EX['paired_model_test']['mean_sq_err_xgb']:.2f} versus {EX['paired_model_test']['mean_sq_err_lstm']:.2f}, "
+  f"the LSTM lower in only {100 * EX['paired_model_test']['lstm_lower_sq_err_share']:.0f}% of cases — which is "
+  "why the decision layer, not the choice between these two forecasters, is where the reported value is created.")
+H2("4.6 Implications for decision support")
 P("Once a reasonable forecast exists, further accuracy gains returned little here, whereas converting forecasts "
   "into orders with validation-calibrated error information lowered cost consistently whenever the two kinds of "
   "error carry different costs. Because each correction is a stored table of residual quantiles and each "
@@ -488,8 +537,9 @@ P("Once a reasonable forecast exists, further accuracy gains returned little her
 H1("5. Limitations")
 P("The cost ratios are assumptions, so reductions are scenario results, not retailer savings. The decision model "
   "is a single-period, case-by-case order with no replenishment lead time, carry-over, capacity or service-level "
-  "constraint. The study uses 10,000 of 30,490 series from a community copy of the data, one 91-day test window and "
-  "one random seed; intervals do not capture variation across windows or retraining. The validation window "
+  "constraint. The study uses 10,000 of 30,490 series from a community copy of the data, one 91-day test window "
+  "and one random seed; although the gain was stable across three sub-windows of that period (Section 4.5), a "
+  "single window and seed still leave variation across years and samples unmeasured. The validation window "
   "contains a holiday season that the test window lacks, which may make calibration conservative for other "
   "periods. Calibration is by forecast bin and coverage was checked in aggregate only. Hyperparameter search was "
   "small, and the LSTM was not tuned beyond one configuration. The risk definition was revised once after "

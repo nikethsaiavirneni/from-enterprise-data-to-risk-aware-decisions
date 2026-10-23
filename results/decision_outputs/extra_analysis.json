@@ -1,0 +1,65 @@
+{
+  "focus_ratio": 8,
+  "ablation": {
+    "xgb": {
+      "point": 3.5785258522245504,
+      "global": 2.6655571899720054,
+      "risk_aware": 2.2895648239589192,
+      "reduction_risk_vs_point": 0.360193297881127,
+      "reduction_risk_vs_global": 0.14105582406094797
+    },
+    "lstm": {
+      "point": 3.524614903132062,
+      "global": 2.6211774821464515,
+      "risk_aware": 2.283003170159558,
+      "reduction_risk_vs_point": 0.3522687632822459,
+      "reduction_risk_vs_global": 0.12901618234182555
+    }
+  },
+  "bin_sensitivity": {
+    "5": 0.33627994476775824,
+    "10": 0.360193297881127,
+    "15": 0.3647630538002965,
+    "20": 0.3669886880482851
+  },
+  "window_stability": {
+    "window_1": {
+      "days": [
+        1851,
+        1880
+      ],
+      "n_cases": 300000,
+      "reduction_vs_point": 0.3512642835160712,
+      "ci_low": 0.34408113310438854,
+      "ci_high": 0.357845381797039
+    },
+    "window_2": {
+      "days": [
+        1881,
+        1910
+      ],
+      "n_cases": 300000,
+      "reduction_vs_point": 0.3574035832592123,
+      "ci_low": 0.3512737645448449,
+      "ci_high": 0.36385992462318134
+    },
+    "window_3": {
+      "days": [
+        1911,
+        1941
+      ],
+      "n_cases": 310000,
+      "reduction_vs_point": 0.37055031383936443,
+      "ci_low": 0.3634722232029005,
+      "ci_high": 0.3778736285411813
+    }
+  },
+  "paired_model_test": {
+    "n": 910000,
+    "mean_sq_err_xgb": 4.193262100219727,
+    "mean_sq_err_lstm": 4.134099960327148,
+    "lstm_lower_sq_err_share": 0.5580824175824176,
+    "wilcoxon_stat": 197113708544.0,
+    "p_value": 0.0
+  }
+}
