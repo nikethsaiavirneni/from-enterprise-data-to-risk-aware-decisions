@@ -1,8 +1,8 @@
 # PLAN.md — What We Are Building and How
 
-**Project:** AI-Integrated Data Analytics for Strategic Decision Intelligence
+**Project:** From Enterprise Data to Risk-Aware Decisions: A Knowledge-Grounded AI Framework for Digital Transformation and Innovation
 **Written:** 22 August 2026
-**Status:** Planning done. No code written yet. No experiments run yet. No results exist yet.
+**Status:** Research design being refined using an accepted *Knowledge-Based Systems* Short Communication as a writing/structure reference. M5 data, implementation, and experiments must be verified before results are reported.
 
 > The original instructions are stored word-for-word in `PROMPT.md`.
 > This file is the plain-language plan: what we decided, and what happens next.
@@ -18,7 +18,7 @@ uncertain* the prediction is, we turn that uncertainty into a *risk level*, and 
 the risk level into a *recommendation a manager could act on*. Finally we test whether
 those risk-aware recommendations actually lose less money than plain predictions.
 
-The core argument of the paper: **a prediction is not a decision.**
+The core argument of the paper: **a prediction is not a decision.** The accepted Thota paper is used as a reference for concise technical narration, explicit knowledge rules, baseline comparison, ablation, and reproducibility—not as a source to copy.
 
 ---
 
@@ -312,24 +312,34 @@ leakage decisions, and it is much cheaper to catch a mistake there than after tr
 
 ## 13. What gets produced
 
+Keep the submitted paper compact: exactly two main figures and two main tables. Supporting diagnostics may be saved as supplementary artifacts, but they are not additional main-paper figures/tables.
+
 ```
-data/raw/          the downloaded Walmart CSVs
-data/processed/    cleaned data
-data/features/     model-ready features
-models/            trained models
-results/metrics/           scores
-results/predictions/       forecasts
-results/figures/           charts
-results/explanations/      SHAP output
-results/decision_outputs/  decision_recommendations.csv
-results/gpu_usage.csv      GPU memory log
-paper/figures/     the 10 paper figures
-paper/tables/      the 7 paper tables
-experiment_config.json     seeds, versions, split dates, parameters
-experiment_log.csv         every run recorded
+data/raw/          original M5 files (not committed if large/licensed)
+data/processed/    cleaned subset and documented schema
+src/               reproducible experiment code
+models/            saved fitted models/configuration
+results/metrics/   measured metrics
+results/predictions/ forecasts
+results/figures/   generated figure files
+results/tables/    generated table files
+results/decision_outputs/ decision-level outputs
+paper/figures/     exactly two main-paper figures
+paper/tables/      exactly two main-paper tables
+paper/             manuscript and literature matrix
+experiment_config.json
+experiment_log.csv
 ```
 
----
+**Main-paper Figure 1:** Proposed knowledge-grounded forecast-to-decision framework: data, prediction, explanation, validation-derived risk, decision policy, and human review. Label it as the proposed framework, not an empirical result.
+
+**Main-paper Figure 2:** Test-set decision-cost comparison between forecast-only and risk-aware policies across a predeclared sensitivity range of understocking/overstocking costs. Values must be generated from the real experiment; if the experiment does not support this plot, do not fabricate it.
+
+**Main-paper Table 1:** Forecasting performance on chronological holdout data (e.g., seasonal-naïve baseline, XGBoost, and LSTM if successfully trained), with MAE, RMSE, WAPE/RMSSE where valid, runtime, and clearly defined evaluation horizon.
+
+**Main-paper Table 2:** Decision-level policy evaluation and ablation, comparing forecast-only against risk-aware decisions using the same held-out observations and explicit cost assumptions. Include cost sensitivity and uncertainty intervals where supported.
+
+Inventory understocking/overstocking costs are experimental assumptions unless supported by verified external evidence. No synthetic-demo metrics may be presented as M5 findings.
 
 ## 14. Open items we still have to settle
 
