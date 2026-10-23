@@ -1,0 +1,105 @@
+{
+  "horizon": 1,
+  "device": "cuda",
+  "epochs_run": 12,
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": -0.30262203496217727,
+      "val_loss": -0.09628547728061676,
+      "seconds": 89.8
+    },
+    {
+      "epoch": 2,
+      "train_loss": -0.3320813170347214,
+      "val_loss": -0.10522200167179108,
+      "seconds": 271.0
+    },
+    {
+      "epoch": 3,
+      "train_loss": -0.31958255448937417,
+      "val_loss": -0.11145463585853577,
+      "seconds": 431.6
+    },
+    {
+      "epoch": 4,
+      "train_loss": -0.2731827426371574,
+      "val_loss": -0.10764027386903763,
+      "seconds": 687.6
+    },
+    {
+      "epoch": 5,
+      "train_loss": -0.3238151686012745,
+      "val_loss": -0.09198065102100372,
+      "seconds": 837.0
+    },
+    {
+      "epoch": 6,
+      "train_loss": -0.3031754461014271,
+      "val_loss": -0.1139727532863617,
+      "seconds": 925.1
+    },
+    {
+      "epoch": 7,
+      "train_loss": -0.33257626039147375,
+      "val_loss": -0.11167795211076736,
+      "seconds": 988.3
+    },
+    {
+      "epoch": 8,
+      "train_loss": -0.32235844262313845,
+      "val_loss": -0.11271145194768906,
+      "seconds": 1042.4
+    },
+    {
+      "epoch": 9,
+      "train_loss": -0.3472491517941952,
+      "val_loss": -0.1152927502989769,
+      "seconds": 1101.4
+    },
+    {
+      "epoch": 10,
+      "train_loss": -0.34819197239017485,
+      "val_loss": -0.11524645984172821,
+      "seconds": 1156.8
+    },
+    {
+      "epoch": 11,
+      "train_loss": -0.3235248696870804,
+      "val_loss": -0.1154525950551033,
+      "seconds": 1237.6
+    },
+    {
+      "epoch": 12,
+      "train_loss": -0.3401710627621412,
+      "val_loss": -0.11531099677085876,
+      "seconds": 1293.4
+    }
+  ],
+  "best_val_poisson_nll": -0.1154525950551033,
+  "train_seconds": 1293.4,
+  "inference_seconds_test": 1.12,
+  "gpu_peak_allocated_mb": 2592.7,
+  "params": 24689,
+  "config": {
+    "seq": 28,
+    "hidden": 64,
+    "emb": 8,
+    "batch": 256,
+    "lr": 0.002,
+    "samples_per_epoch": 2000000,
+    "patience": 3
+  },
+  "lstm_val": {
+    "MAE": 0.8923476338386536,
+    "RMSE": 1.899841070175171,
+    "WAPE": 0.7272738884218036,
+    "RMSSE": 0.7085176446778109
+  },
+  "lstm_test": {
+    "MAE": 0.9365006685256958,
+    "RMSE": 1.8112691640853882,
+    "WAPE": 0.6983359104586218,
+    "RMSSE": 0.7636449546950737
+  }
+}

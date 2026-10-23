@@ -1,0 +1,25 @@
+== ON-SHELF RULE: keep a day only if a price is listed that week (full data) ==
+series-days total                      : 59181090
+series-days dropped (no listed price)  : 12299413 (20.8%)
+  of which sales > 0                   : 0
+  share of dropped days with zero sales: 100.0000%
+zero share, all days / kept days       : 0.680 / 0.596
+
+== CHRONOLOGICAL SPLIT (1-based day index, inclusive) ==
+train : d_1 .. d_1759  (2011-01-29 .. 2015-11-22, 1759 days)
+val   : d_1760 .. d_1850  (2015-11-23 .. 2016-02-21, 91 days)
+test  : d_1851 .. d_1941  (2016-02-22 .. 2016-05-22, 91 days)
+
+== SAMPLE (seed 42, stratified by department) ==
+items sampled                          : 1000 of 3049
+series sampled                         : 10000 of 30490
+stores / states covered                : 10 / 3
+departments covered                    : 7 of 7
+rows after rule                        : 15411012
+bytes per row (base table)             : 13.0
+sample base table                      : 0.200 GB
+est. with 30 float32 features, sample : 2.05 GB (cap 5.0 GB)
+est. same, ALL series (46881677 rows)  : 6.24 GB -> exceeds cap; sample required
+rows in train                          : 13591731
+rows in val                            : 909281
+rows in test                           : 910000

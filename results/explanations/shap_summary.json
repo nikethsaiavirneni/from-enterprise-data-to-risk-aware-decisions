@@ -1,0 +1,66 @@
+{
+  "h1": {
+    "n_sample": 20000,
+    "seed": 42,
+    "top5": [
+      {
+        "feature": "roll_mean_28",
+        "share": 0.3279443085193634
+      },
+      {
+        "feature": "roll_mean_7",
+        "share": 0.2875121533870697
+      },
+      {
+        "feature": "lag_1",
+        "share": 0.08090770244598389
+      },
+      {
+        "feature": "wday",
+        "share": 0.061024583876132965
+      },
+      {
+        "feature": "roll_std_28",
+        "share": 0.055824607610702515
+      }
+    ],
+    "group_share": {
+      "recent sales (lags, rolling)": 0.8065000176429749,
+      "calendar and events": 0.09849999845027924,
+      "price": 0.05009999871253967,
+      "store and product hierarchy": 0.04490000009536743
+    }
+  },
+  "h28": {
+    "n_sample": 20000,
+    "seed": 42,
+    "top5": [
+      {
+        "feature": "roll_mean_28",
+        "share": 0.40016868710517883
+      },
+      {
+        "feature": "roll_std_28",
+        "share": 0.1266479641199112
+      },
+      {
+        "feature": "roll_mean_7",
+        "share": 0.09942584484815598
+      },
+      {
+        "feature": "wday",
+        "share": 0.05763089284300804
+      },
+      {
+        "feature": "dept",
+        "share": 0.050578679889440536
+      }
+    ],
+    "group_share": {
+      "recent sales (lags, rolling)": 0.73580002784729,
+      "calendar and events": 0.09809999912977219,
+      "store and product hierarchy": 0.09019999951124191,
+      "price": 0.07580000162124634
+    }
+  }
+}

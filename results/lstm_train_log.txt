@@ -1,0 +1,31 @@
+device: cuda NVIDIA GeForce RTX 3060 Laptop GPU
+h=1 epoch 1: train -0.3026 val -0.0963
+h=1 epoch 2: train -0.3321 val -0.1052
+h=1 epoch 3: train -0.3196 val -0.1115
+h=1 epoch 4: train -0.2732 val -0.1076
+h=1 epoch 5: train -0.3238 val -0.0920
+h=1 epoch 6: train -0.3032 val -0.1140
+h=1 epoch 7: train -0.3326 val -0.1117
+h=1 epoch 8: train -0.3224 val -0.1127
+h=1 epoch 9: train -0.3472 val -0.1153
+h=1 epoch 10: train -0.3482 val -0.1152
+h=1 epoch 11: train -0.3235 val -0.1155
+h=1 epoch 12: train -0.3402 val -0.1153
+val {'MAE': 0.8923, 'RMSE': 1.8998, 'WAPE': 0.7273, 'RMSSE': 0.7085}
+test {'MAE': 0.9365, 'RMSE': 1.8113, 'WAPE': 0.6983, 'RMSSE': 0.7636}
+GPU peak allocated 2593 MB (cap 4096), train 1293s, params 24689
+h=28 epoch 1: train -0.1033 val 0.0455
+h=28 epoch 2: train -0.1469 val 0.0364
+h=28 epoch 3: train -0.1406 val 0.0279
+h=28 epoch 4: train -0.1027 val 0.0275
+h=28 epoch 5: train -0.1561 val 0.0408
+h=28 epoch 6: train -0.1658 val 0.0280
+h=28 epoch 7: train -0.1673 val 0.0225
+h=28 epoch 8: train -0.1743 val 0.0248
+h=28 epoch 9: train -0.1674 val 0.0235
+h=28 epoch 10: train -0.1834 val 0.0208
+h=28 epoch 11: train -0.1606 val 0.0212
+h=28 epoch 12: train -0.1775 val 0.0260
+val {'MAE': 0.9974, 'RMSE': 2.1492, 'WAPE': 0.8129, 'RMSSE': 0.7482}
+test {'MAE': 1.0168, 'RMSE': 2.0332, 'WAPE': 0.7582, 'RMSSE': 0.7932}
+GPU peak allocated 2592 MB (cap 4096), train 715s, params 24689

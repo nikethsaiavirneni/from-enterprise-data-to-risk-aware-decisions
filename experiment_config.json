@@ -1,0 +1,52 @@
+{
+  "data": {
+    "source": "M5 Forecasting Accuracy (community mirror github.com/Nixtla/m5-forecasts)",
+    "seed": 42,
+    "n_items": 1000,
+    "n_series": 10000,
+    "val_days": 91,
+    "test_days": 91,
+    "split": {
+      "train": {
+        "d_start": 1,
+        "d_end": 1759,
+        "date_start": "2011-01-29",
+        "date_end": "2015-11-22"
+      },
+      "val": {
+        "d_start": 1760,
+        "d_end": 1850,
+        "date_start": "2015-11-23",
+        "date_end": "2016-02-21"
+      },
+      "test": {
+        "d_start": 1851,
+        "d_end": 1941,
+        "date_start": "2016-02-22",
+        "date_end": "2016-05-22"
+      }
+    },
+    "rule": "keep series-day only if a price is listed in that week"
+  },
+  "features": {
+    "lags": {
+      "1": [
+        1,
+        7,
+        14,
+        28
+      ],
+      "28": [
+        28,
+        35,
+        42,
+        56
+      ]
+    },
+    "warmup_days": 60,
+    "n_features": {
+      "1": 23,
+      "28": 23
+    }
+  }
+}

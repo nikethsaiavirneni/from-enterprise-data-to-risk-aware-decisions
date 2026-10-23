@@ -1,0 +1,76 @@
+
+== FILES ==
+sales_train_evaluation.csv                  : 121.17 MB, sha256 c21a519596680feb...
+calendar.csv                                : 0.11 MB, sha256 568d0fe5f4179014...
+sell_prices.csv                             : 237.07 MB, sha256 5c7cf045b1abbdc8...
+
+== SALES (sales_train_evaluation.csv) ==
+rows x columns                              : 30490 x 1946
+identifier columns                          : ['item_id', 'dept_id', 'cat_id', 'store_id', 'state_id']
+daily columns                               : 1941 (d_1 .. d_1941)
+unique items                                : 3049
+unique stores                               : 10
+unique states                               : ['CA', 'TX', 'WI']
+unique departments                          : 7
+categories                                  : ['FOODS', 'HOBBIES', 'HOUSEHOLD']
+unique (item, store) series                 : 30490
+missing values (all columns)                : 0
+daily column dtype                          : int64
+wide table memory int64 / int16 (MB)        : 473.4 / 118.4
+target variable                             : daily unit sales per item per store (non-negative integer count)
+min / max / mean                            : 0 / 763 / 1.1309
+negative values                             : 0
+share of zero-sales entries                 : 0.6800 (68.0%)
+series with >50% zero days                  : 78.2%
+series with >90% zero days                  : 16.8%
+series with all-zero history                : 0
+series with first sale after d_1            : 77.1% (late launches / not yet stocked)
+median first-sale day index                 : 160
+
+== CALENDAR (calendar.csv) ==
+rows x columns                              : 1969 x 13
+columns                                     : ['date', 'wm_yr_wk', 'weekday', 'wday', 'month', 'year', 'event_name_1', 'event_type_1', 'event_name_2', 'event_type_2', 'snap_CA', 'snap_TX', 'snap_WI']
+date range                                  : 2011-01-29 .. 2016-06-19
+granularity                                 : daily
+days with sales data / without              : 1941 / 28
+has 'd' day-key column                      : False
+day mapping used                            : row order: d_k = k-th calendar row (calendar has no 'd' column)
+date of d_1 / last sales day                : 2011-01-29 / 2016-05-22
+days with event_name_1                      : 162
+event types                                 : ['Cultural', 'National', 'Religious', 'Sporting']
+SNAP days CA                                : 650
+SNAP days TX                                : 650
+SNAP days WI                                : 650
+missing values (non-event columns)          : 0
+
+== PRICES (sell_prices.csv) ==
+rows x columns                              : 6841121 x 4
+columns                                     : ['store_id', 'item_id', 'wm_yr_wk', 'sell_price']
+missing values                              : 0
+price min / median / max                    : 0.01 / 3.47 / 107.32
+unique (store, item) with a price           : 30490
+weeks covered                               : 11101 .. 11621
+memory (MB)                                 : 333.6
+
+== AVAILABLE COVARIATES ==
+static                                      : item_id, dept_id, cat_id, store_id, state_id
+calendar                                    : weekday, wday, month, year, events, SNAP flags
+price                                       : sell_price by store, item, week (not available before a product is sold)
+
+== SALES BY GROUP (total units, share of total) ==
+cat_id=FOODS                                : 45922427 (68.6%)
+cat_id=HOBBIES                              : 6240656 (9.3%)
+cat_id=HOUSEHOLD                            : 14764090 (22.1%)
+state_id=CA                                 : 29196717 (43.6%)
+state_id=TX                                 : 19228405 (28.7%)
+state_id=WI                                 : 18502051 (27.6%)
+store_id=CA_1                               : 7832248 (11.7%)
+store_id=CA_2                               : 5818395 (8.7%)
+store_id=CA_3                               : 11363540 (17.0%)
+store_id=CA_4                               : 4182534 (6.2%)
+store_id=TX_1                               : 5692823 (8.5%)
+store_id=TX_2                               : 7329642 (11.0%)
+store_id=TX_3                               : 6205940 (9.3%)
+store_id=WI_1                               : 5261506 (7.9%)
+store_id=WI_2                               : 6697988 (10.0%)
+store_id=WI_3                               : 6542557 (9.8%)

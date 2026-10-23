@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+.pytest_cache/
+
+# data and large regenerable outputs (rebuilt by the scripts in src/)
+data/raw/*
+!data/raw/.gitkeep
+data/processed/
+data/features/
+models/
+results/predictions/
+results/decision_outputs/decision_recommendations_*.csv
+results/explanations/*.npy
+results/explanations/*.parquet
