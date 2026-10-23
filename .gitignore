@@ -1,8 +1,17 @@
+# Python environments and caches
 .venv/
+venv/
 __pycache__/
+*.py[cod]
 .pytest_cache/
 
-# data and large regenerable outputs (rebuilt by the scripts in src/)
+# Credentials: never commit API keys
+kaggle.json
+.kaggle/
+.env
+.env.*
+
+# Data and large regenerable outputs (rebuilt by the scripts in src/)
 data/raw/*
 !data/raw/.gitkeep
 data/processed/

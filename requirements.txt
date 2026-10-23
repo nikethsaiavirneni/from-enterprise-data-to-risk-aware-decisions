@@ -5,7 +5,6 @@ xgboost>=3.4
 shap>=0.52
 matplotlib>=3.11
 pyarrow
-kaggle
 pytest
 python-docx
 # PyTorch (CUDA 12.8 build) is installed separately:
