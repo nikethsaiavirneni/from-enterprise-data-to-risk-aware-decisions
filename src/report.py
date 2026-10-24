@@ -13,7 +13,6 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import pandas as pd
-from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
 
 from data import HORIZONS, LAGS, RESULTS, WARMUP, log
 from decision import BOOT, N_BINS, RATIOS, RULES
