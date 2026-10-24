@@ -20,6 +20,7 @@
 2026-10-24T11:16:23 [lstm] h=28 12 epochs, GPU peak 2592 MB (cap 4096), train 488s, params 24689
 2026-10-24T11:18:09 [shap] h1: n=20000, top feature roll_mean_28, group share {'recent sales (lags, rolling)': 0.8065000176429749, 'calendar and events': 0.09849999845027924, 'price': 0.05009999871253967, 'store and product hierarchy': 0.04490000009536743}
 2026-10-24T11:18:09 [shap] h28: n=20000, top feature roll_mean_28, group share {'recent sales (lags, rolling)': 0.73580002784729, 'calendar and events': 0.09809999912977219, 'store and product hierarchy': 0.09019999951124191, 'price': 0.07580000162124634}
-2026-10-24T11:19:46 [decision] h=1: rule base fired for 910,000 test cases; rules never fired: [('High', 'High'), ('High', 'Moderate')]
-2026-10-24T11:19:50 [decision] h=28: rule base fired for 910,000 test cases; rules never fired: [('High', 'High'), ('High', 'Moderate')]
-2026-10-24T11:19:57 [report] wrote Figure_1/2 (.png, .pdf), Table_1/2.csv and results_pack.md in results/
+2026-10-24T11:50:14 [decision] h=1: rule base fired for 910,000 test cases; rules never fired: [('High', 'High'), ('High', 'Moderate')]
+2026-10-24T11:50:17 [decision] h=28: rule base fired for 910,000 test cases; rules never fired: [('High', 'High'), ('High', 'Moderate')]
+2026-10-24T11:50:26 [report] wrote Figure_1/2 (.png, .pdf), Table_1/2.csv and results_pack.md in results/
+2026-10-24T11:50:51 [report] wrote Figure_1/2 (.png, .pdf), Table_1/2.csv and results_pack.md in results/

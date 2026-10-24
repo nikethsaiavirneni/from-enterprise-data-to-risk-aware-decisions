@@ -21,7 +21,7 @@ from models import BASE, BASELINES, CAT_COLS, EARLY, GRID, MAX_ROUNDS, NUM_COLS,
 
 MN = "−"
 INK, MUTED, GRID_C = "#0b0b0b", "#52514e", "#dcdcd8"
-BLUE, ORANGE, AQUA = "#2a78d6", "#eb6834", "#1baf7a"      # validated categorical slots 1-3
+BLUE, ORANGE, AQUA, PURPLE = "#2a78d6", "#eb6834", "#1baf7a", "#8a63d2"   # categorical slots
 RATIO_FOCUS, H_FOCUS = 8, 28
 plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 8, "axes.edgecolor": MUTED,
                      "axes.labelcolor": INK, "text.color": INK, "xtick.color": MUTED,
@@ -42,6 +42,7 @@ def load():
             "strata": {(m, h): st[(st.model == m) & (st.horizon == h)].set_index("risk")
                        for m in ("xgb", "lstm") for h in (1, 28)},
             "shap": read_json("shap.json"), "rob": read_json("robustness.json"),
+            "cov": pd.read_csv(RESULTS / "coverage_by_bin.csv"),
             "data": rep["data"], "feat": rep["features"]}
 
 
@@ -83,49 +84,44 @@ def save_fig(fig, name):
 
 
 def figure1(R):
-    h = H_FOCUS
-    x28, n28 = R["X"][h], R["feat"]["per_horizon"][str(h)]
-    st = R["strata"][("xgb", h)]["wape"]
-    focus = R["cost"][("xgb", h)].query(f"ratio == {RATIO_FOCUS} and policy == 'risk_aware'").iloc[0]
-    pct = lambda v: f"{100 * v:.0f}"
-    boxes = [
-        ("1  Data", [f"{R['data']['n_series']:,} series", f"{n28['rows'] / 1e6:.1f} M series-days",
-                     "chronological split", "91-day val., test"]),
-        ("2  Forecast", ["test RMSE:", f"XGBoost {x28['xgboost_test']['RMSE']:.2f}",
-                         f"LSTM {R['L'][h]['lstm_test']['RMSE']:.2f}",
-                         f"naive {x28['seasonal_naive_test']['RMSE']:.2f}"]),
-        ("3  Explain", ["SHAP on XGBoost",
-                        f"{pct(R['shap']['h28']['group_share']['recent sales (lags, rolling)'])}% from recent",
-                        "sales features", "not causation"]),
-        ("4  Risk strata", ["test WAPE:", f"Low {pct(st['Low'])}%", f"Moderate {pct(st['Moderate'])}%",
-                            f"High {pct(st['High'])}%", "validation cut-offs"]),
-        ("5  Decision", ["forecast + residual", "quantile of its bin",
-                         f"cost {MN}{pct(focus.reduction_vs_point)}% at {RATIO_FOCUS}:1",
-                         f"CI [{MN}{100 * focus.ci_high:.1f}, {MN}{100 * focus.ci_low:.1f}]%"]),
-    ]
-    fig, ax = plt.subplots(figsize=(6.3, 2.9))   # drawn at print size: fonts are true point sizes
-    ax.set_xlim(-0.5, 101)
-    ax.set_ylim(0, 40)
-    ax.axis("off")
-    w, gap, y0, hgt = 17.8, 2.8, 12, 25
-    for i, (title, lines) in enumerate(boxes):
-        x = i * (w + gap) + 0.4
-        ax.add_patch(FancyBboxPatch((x, y0), w, hgt, boxstyle="round,pad=0.3,rounding_size=1.2",
-                                    fc="#f4f6fa", ec=BLUE, lw=1.0))
-        ax.text(x + w / 2, y0 + hgt - 3.4, title, ha="center", va="center", fontsize=7.8,
-                fontweight="bold", color=INK)
-        for j, ln in enumerate(lines):
-            muted = j == len(lines) - 1 and (len(lines) > 4 or i in (0, 1, 2))
-            ax.text(x + w / 2, y0 + hgt - 8.4 - j * 3.4, ln, ha="center", va="center",
-                    fontsize=6.2, color=MUTED if muted else INK)
-        if i < len(boxes) - 1:
-            ax.add_patch(FancyArrowPatch((x + w + 0.5, y0 + hgt / 2), (x + w + gap - 0.4, y0 + hgt / 2),
-                                         arrowstyle="-|>", mutation_scale=9, color=MUTED, lw=1.0))
-    ax.annotate("", xy=(1, 7.6), xytext=(99, 7.6), arrowprops={"arrowstyle": "<->", "color": ORANGE, "lw": 1.0})
-    ax.text(50, 4.6, "Calibration is fitted on validation data only and applied unchanged to the test split",
-            ha="center", fontsize=6.9, color=INK)
-    ax.text(50, 1.2, "Values are read from saved experiment outputs (28-day horizon)",
-            ha="center", fontsize=6.2, color=MUTED)
+    """(a) test RMSE by model and horizon; (b) order coverage by forecast decile against the target."""
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(6.6, 3.0), gridspec_kw={"width_ratios": [1.05, 1]})
+    # (a) accuracy barely separates the models
+    models = [("Seasonal naive", "seasonal_naive_test", "#c3c2bd"), ("28-day rolling mean", "roll_mean_28_test", "#8d8c87"),
+              ("XGBoost", "xgboost_test", BLUE), ("LSTM", "lstm_test", PURPLE)]
+    width = 0.2
+    for i, (label, key, col) in enumerate(models):
+        vals = [(R["L"][h] if key == "lstm_test" else R["X"][h])[key]["RMSE"] for h in HORIZONS]
+        xs = [j + (i - 1.5) * width for j in range(len(HORIZONS))]
+        ax1.bar(xs, vals, width * 0.92, color=col, label=label)
+        for x, v in zip(xs, vals, strict=True):
+            ax1.text(x, v + 0.04, f"{v:.2f}", ha="center", va="bottom", fontsize=5.6, color=INK)
+    ax1.set_xticks(range(len(HORIZONS)))
+    ax1.set_xticklabels([f"{h}-day lead" for h in HORIZONS])
+    ax1.set_ylabel("Test RMSE (units per series-day)")
+    ax1.set_ylim(0, 3.35)
+    ax1.grid(axis="y", color=GRID_C, lw=0.6)
+    ax1.set_axisbelow(True)
+    ax1.legend(frameon=False, fontsize=6.2, loc="upper left", ncol=2, columnspacing=0.8, handlelength=1.1)
+    ax1.set_title("(a) Forecast accuracy barely separates the models", fontsize=7.4, loc="left", color=INK)
+    # (b) coverage by forecast decile: the risk-aware policy tracks the target in every bin
+    cov = R["cov"].query(f"model == 'xgb' and horizon == {H_FOCUS}")
+    target = cov.target.iloc[0]
+    for key, label, col, mk, ls in (("point", "Point forecast", BLUE, "o", "-"), ("global", "Global correction", ORANGE, "s", "--"),
+                                    ("risk_aware", "Risk-aware", AQUA, "D", "-")):
+        g = cov[cov.policy == key].sort_values("bin")
+        ax2.plot(g.bin, 100 * g.coverage, color=col, marker=mk, ls=ls, lw=1.5, ms=4, mec="white", mew=0.6, label=label)
+    ax2.axhline(100 * target, color=INK, lw=0.9, ls=":")
+    ax2.text(10.4, 100 * target + 1.8, f"target {100 * target:.1f}%", ha="right", va="bottom", fontsize=6.2, color=INK)
+    ax2.set_xticks(range(1, int(cov.bin.max()) + 1))
+    ax2.set_xlabel("Forecast decile (1 = lowest forecast)")
+    ax2.set_ylabel("Orders that cover demand (%)")
+    ax2.set_ylim(0, 105)
+    ax2.grid(axis="y", color=GRID_C, lw=0.6)
+    ax2.set_axisbelow(True)
+    ax2.legend(frameon=False, fontsize=6.2, loc="lower right")
+    ax2.set_title(f"(b) Coverage at {RATIO_FOCUS}:1, {H_FOCUS}-day lead", fontsize=7.4, loc="left", color=INK)
+    fig.tight_layout(w_pad=1.6)
     save_fig(fig, "Figure_1")
 
 
@@ -326,11 +322,19 @@ def results_pack(R, t1, t2):
                       f"[{100 * v['ci_low']:.1f}, {100 * v['ci_high']:.1f}]" for k, v in rob["window_stability"].items()),
             ""]
 
+    cov = R["cov"].query(f"model == 'xgb' and horizon == {H_FOCUS}")
+    cov_txt = "; ".join(
+        f"{pol}: coverage {100 * g.coverage.min():.1f}-{100 * g.coverage.max():.1f}% across deciles, mean absolute "
+        f"gap to target {100 * (g.coverage - g.target).abs().mean():.1f} points"
+        for pol, g in cov.groupby("policy"))
     out += ["## 9. Figures", "",
-            "- `Figure_1`: five-box framework diagram (data, forecast, explain, risk strata, decision) annotated with "
-            "values from this run (h=28).",
-            "- `Figure_2`: cost per unit of demand against the assumed cost ratio for the three policies, with the "
-            f"{RATIO_FOCUS}:1 reduction and its 95% CI marked (XGBoost, h=28).", ""]
+            "- Figure_1: two panels. (a) Test RMSE of seasonal naive, 28-day rolling mean, XGBoost and LSTM at both "
+            "lead times (values printed on the bars); (b) share of test cases whose order covers demand, by forecast "
+            f"decile (deciles fixed on validation), for the three policies at {RATIO_FOCUS}:1, XGBoost, "
+            f"{H_FOCUS}-day lead, against the target tau = {100 * cov.target.iloc[0]:.1f}%. Panel (b) numbers: {cov_txt}.",
+            "- Figure_2: cost per unit of demand against the assumed cost ratio for the three policies, with the "
+            f"{RATIO_FOCUS}:1 reduction and its 95% CI marked (XGBoost, h=28). The framework layers are described in "
+            "section 2 above (there is no flow-chart figure; a writer may add the algorithm as a text box).", ""]
 
     out += ["## 10. Claims the evidence does and does not support", "",
             "Supported: forecast accuracy alone did not separate the approaches (a 28-day rolling mean is close); the "

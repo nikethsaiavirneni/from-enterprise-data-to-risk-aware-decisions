@@ -141,8 +141,8 @@ Change columns are relative to the point policy (negative = cheaper). CI is the 
 
 ## 9. Figures
 
-- `Figure_1`: five-box framework diagram (data, forecast, explain, risk strata, decision) annotated with values from this run (h=28).
-- `Figure_2`: cost per unit of demand against the assumed cost ratio for the three policies, with the 8:1 reduction and its 95% CI marked (XGBoost, h=28).
+- Figure_1: two panels. (a) Test RMSE of seasonal naive, 28-day rolling mean, XGBoost and LSTM at both lead times (values printed on the bars); (b) share of test cases whose order covers demand, by forecast decile (deciles fixed on validation), for the three policies at 8:1, XGBoost, 28-day lead, against the target tau = 88.9%. Panel (b) numbers: global: coverage 68.2-98.5% across deciles, mean absolute gap to target 6.9 points; point: coverage 52.8-90.3% across deciles, mean absolute gap to target 20.5 points; risk_aware: coverage 86.8-90.3% across deciles, mean absolute gap to target 0.8 points.
+- Figure_2: cost per unit of demand against the assumed cost ratio for the three policies, with the 8:1 reduction and its 95% CI marked (XGBoost, h=28). The framework layers are described in section 2 above (there is no flow-chart figure; a writer may add the algorithm as a text box).
 
 ## 10. Claims the evidence does and does not support
 

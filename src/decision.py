@@ -12,7 +12,7 @@ with tau = Cu / (Cu + Co), the newsvendor critical ratio, and residual e = D - f
 Cost = Cu * max(D - Q, 0) + Co * max(Q - D, 0), reported per unit of realised demand.
 
 Run:  python src/decision.py   -> results/decision_cost.csv, strata.csv, robustness.json, rule_counts.csv,
-      recommendations_sample.csv
+      coverage_by_bin.csv, recommendations_sample.csv
 """
 import json
 
@@ -122,6 +122,21 @@ def evaluate(sid, y, f, cal, ratios=RATIOS, boot=BOOT, seed=SEED):
     return pd.DataFrame(rows)
 
 
+def coverage_by_bin(y, f, cal, ratio=FOCUS_RATIO):
+    """Share of test cases whose order covers demand, per validation-defined forecast bin and policy.
+    A well-calibrated quantile policy covers about tau = Cu/(Cu+Co) of cases in every bin."""
+    tau = ratio / (1 + ratio)
+    b = np.searchsorted(cal["edges"], f, side="right")
+    rows = []
+    for k in POLICIES:
+        covered = y <= np.maximum(f + adjustment(cal, f, tau, k), 0.0)
+        for j in range(len(cal["edges"]) + 1):
+            m = b == j
+            rows.append({"policy": k, "bin": j + 1, "n_cases": int(m.sum()), "target": tau,
+                         "coverage": float(covered[m].mean()) if m.any() else np.nan})
+    return pd.DataFrame(rows)
+
+
 def strata_table(risk, y, f):
     d = pd.DataFrame({"risk": risk, "ae": np.abs(y - f), "under": y > f, "y": y})
     g = d.groupby("risk").agg(cases=("ae", "size"), mae=("ae", "mean"), mean_demand=("y", "mean"),
@@ -186,7 +201,7 @@ def robustness():
 
 
 def main():
-    costs, strata, recs, rule_counts = [], [], [], []
+    costs, strata, recs, rule_counts, covs = [], [], [], [], []
     for model in ("xgb", "lstm"):
         for h in (1, 28):
             fva, yva, sid, f, y, d = load(model, h)
@@ -194,6 +209,7 @@ def main():
             res = evaluate(sid, y, f, cal)
             risk, _, _ = risk_strata(cal, f, fva)
             st = strata_table(risk, y, f)
+            covs.append(coverage_by_bin(y, f, cal).assign(model=model, horizon=h))
             costs.append(res.assign(model=model, horizon=h))
             strata.append(st.reset_index().assign(model=model, horizon=h))
             if model == "xgb":     # the rule base applied to every test case; a seeded sample is saved
@@ -211,6 +227,7 @@ def main():
     pd.concat(strata).to_csv(RESULTS / "strata.csv", index=False)
     pd.concat(recs).to_csv(RESULTS / "recommendations_sample.csv", index=False)
     pd.concat(rule_counts).to_csv(RESULTS / "rule_counts.csv", index=False)
+    pd.concat(covs).to_csv(RESULTS / "coverage_by_bin.csv", index=False)
     rob = robustness()
     (RESULTS / "robustness.json").write_text(json.dumps(rob, indent=2))
     print(json.dumps(rob, indent=2))

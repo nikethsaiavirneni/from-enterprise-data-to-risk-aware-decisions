@@ -19,7 +19,7 @@ assumed scenarios, not retailer data.
 | `src/decision.py` | risk strata, rule base, quantile order policies, decision-cost test, robustness checks |
 | `src/report.py` | Figures 1-2, Tables 1-2 and `results_pack.md` (every number, setting and caveat in one file) |
 | `tests/test_pipeline.py` | 20 unit tests: chronological split, leakage, metrics, risk labels, decision rules |
-| `results/` | `Figure_1/2`, `Table_1/2.csv`, `results_pack.md`, `run_log.txt`, metrics, SHAP, strata, robustness |
+| `results/` | `Figure_1/2` (accuracy and coverage panels; cost curves), `Table_1/2.csv`, `results_pack.md`, `run_log.txt`, metrics, SHAP, strata, robustness |
 
 Large files (`data/`, `models/`, `results/predictions/`) are rebuilt by the scripts and are not committed.
 
