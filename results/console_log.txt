@@ -1,0 +1,366 @@
+2026-10-24T10:53:44 [env] python 3.12.10 on Windows-11-10.0.26300-SP0; gpu: NVIDIA GeForce RTX 3060 Laptop GPU, 6144 MiB; seed 42
+2026-10-24T10:53:44 [env] packages: numpy 2.5.4, pandas 3.1.0, scikit-learn 1.9.1, xgboost 3.4.1, shap 0.54.1, torch 2.11.0+cu128, scipy 1.18.1, matplotlib 3.11.2
+2026-10-24T10:53:44 [download] sales_train_evaluation.csv sha256 c21a519596680feb86f27a9e62f6c8b583f8be60c2c195f080ae8ca2990af2b7
+2026-10-24T10:53:44 [download] calendar.csv sha256 568d0fe5f41790142379698732908e4e57432c1c6396f3f59fb880a9c2b54231
+2026-10-24T10:53:44 [download] sell_prices.csv sha256 5c7cf045b1abbdc8d5007809c40b3682c5216075937f93e2cef01caddc4a30d9
+2026-10-24T10:53:51 [preprocess] 10000 of 30490 series, 15411012 rows after the on-shelf rule (20.8% of series-days dropped, 0 of them with sales)
+h=1: 15154455 rows, 23 features
+h=28: 15154455 rows, 23 features
+2026-10-24T10:54:41 [features] h=1: 15154455 rows, 23 features, split rows {'train': 13335174, 'val': 909281, 'test': 910000}
+2026-10-24T10:54:41 [features] h=28: 15154455 rows, 23 features, split rows {'train': 13335174, 'val': 909281, 'test': 910000}
+
+=== XGBoost h=1: train 13335174 val 909281 test 910000, 23 features ===
+cfg0 {'max_depth': 6, 'min_child_weight': 50, 'subsample': 0.8, 'colsample_bytree': 0.8} -> rounds 500, val RMSE 1.8977, 33s
+cfg1 {'max_depth': 8, 'min_child_weight': 50, 'subsample': 0.8, 'colsample_bytree': 0.8} -> rounds 329, val RMSE 1.8925, 35s
+cfg2 {'max_depth': 6, 'min_child_weight': 200, 'subsample': 0.8, 'colsample_bytree': 0.8} -> rounds 499, val RMSE 1.8989, 37s
+cfg3 {'max_depth': 10, 'min_child_weight': 200, 'subsample': 0.7, 'colsample_bytree': 0.7} -> rounds 220, val RMSE 1.8906, 31s
+2026-10-24T10:57:17 [xgb] h=1 val: MAE 0.8963, RMSE 1.8906, WAPE 0.7305, RMSSE 0.7078 | naive RMSE 2.6754
+2026-10-24T10:57:17 [xgb] h=1 test: MAE 0.9437, RMSE 1.8233, WAPE 0.7037, RMSSE 0.7641 | naive RMSE 2.5085
+2026-10-24T10:57:17 [xgb] h=1 chosen config {'max_depth': 10, 'min_child_weight': 200, 'subsample': 0.7, 'colsample_bytree': 0.7}, 220 rounds, tuning seconds [32.6, 34.5, 36.9, 30.9]
+
+=== XGBoost h=28: train 13335174 val 909281 test 910000, 23 features ===
+cfg0 {'max_depth': 6, 'min_child_weight': 50, 'subsample': 0.8, 'colsample_bytree': 0.8} -> rounds 178, val RMSE 2.1484, 14s
+cfg1 {'max_depth': 8, 'min_child_weight': 50, 'subsample': 0.8, 'colsample_bytree': 0.8} -> rounds 169, val RMSE 2.1416, 18s
+cfg2 {'max_depth': 6, 'min_child_weight': 200, 'subsample': 0.8, 'colsample_bytree': 0.8} -> rounds 350, val RMSE 2.1414, 28s
+cfg3 {'max_depth': 10, 'min_child_weight': 200, 'subsample': 0.7, 'colsample_bytree': 0.7} -> rounds 142, val RMSE 2.1360, 22s
+2026-10-24T10:59:11 [xgb] h=28 val: MAE 0.9971, RMSE 2.1360, WAPE 0.8127, RMSSE 0.7460 | naive RMSE 2.7716
+2026-10-24T10:59:11 [xgb] h=28 test: MAE 1.0251, RMSE 2.0477, WAPE 0.7644, RMSSE 0.7942 | naive RMSE 2.6442
+2026-10-24T10:59:11 [xgb] h=28 chosen config {'max_depth': 10, 'min_child_weight': 200, 'subsample': 0.7, 'colsample_bytree': 0.7}, 142 rounds, tuning seconds [14.5, 18.4, 28.1, 22.0]
+device: cuda NVIDIA GeForce RTX 3060 Laptop GPU
+h=1 epoch 1: train -0.3026 val -0.0963
+h=1 epoch 2: train -0.3321 val -0.1052
+h=1 epoch 3: train -0.3196 val -0.1115
+h=1 epoch 4: train -0.2732 val -0.1076
+h=1 epoch 5: train -0.3238 val -0.0920
+h=1 epoch 6: train -0.3032 val -0.1140
+h=1 epoch 7: train -0.3326 val -0.1117
+h=1 epoch 8: train -0.3224 val -0.1127
+h=1 epoch 9: train -0.3472 val -0.1153
+h=1 epoch 10: train -0.3482 val -0.1152
+h=1 epoch 11: train -0.3235 val -0.1155
+h=1 epoch 12: train -0.3402 val -0.1153
+2026-10-24T11:08:07 [lstm] h=1 val: MAE 0.8923, RMSE 1.8998, WAPE 0.7273, RMSSE 0.7085
+2026-10-24T11:08:07 [lstm] h=1 test: MAE 0.9365, RMSE 1.8113, WAPE 0.6983, RMSSE 0.7636
+2026-10-24T11:08:07 [lstm] h=1 12 epochs, GPU peak 2593 MB (cap 4096), train 517s, params 24689
+h=28 epoch 1: train -0.1033 val 0.0455
+h=28 epoch 2: train -0.1469 val 0.0364
+h=28 epoch 3: train -0.1406 val 0.0279
+h=28 epoch 4: train -0.1027 val 0.0275
+h=28 epoch 5: train -0.1561 val 0.0408
+h=28 epoch 6: train -0.1658 val 0.0280
+h=28 epoch 7: train -0.1673 val 0.0225
+h=28 epoch 8: train -0.1743 val 0.0248
+h=28 epoch 9: train -0.1674 val 0.0235
+h=28 epoch 10: train -0.1834 val 0.0208
+h=28 epoch 11: train -0.1606 val 0.0212
+h=28 epoch 12: train -0.1775 val 0.0260
+2026-10-24T11:16:23 [lstm] h=28 val: MAE 0.9974, RMSE 2.1492, WAPE 0.8129, RMSSE 0.7482
+2026-10-24T11:16:23 [lstm] h=28 test: MAE 1.0168, RMSE 2.0332, WAPE 0.7582, RMSSE 0.7932
+2026-10-24T11:16:23 [lstm] h=28 12 epochs, GPU peak 2592 MB (cap 4096), train 488s, params 24689
+
+h=1 top features:
+      feature  share                        group
+roll_mean_28 0.3279 recent sales (lags, rolling)
+ roll_mean_7 0.2875 recent sales (lags, rolling)
+       lag_1 0.0809 recent sales (lags, rolling)
+        wday 0.0610          calendar and events
+ roll_std_28 0.0558 recent sales (lags, rolling)
+roll_zero_28 0.0300 recent sales (lags, rolling)
+       price 0.0277                        price
+        dept 0.0228  store and product hierarchy
+group share: {'recent sales (lags, rolling)': 0.8059999942779541, 'calendar and events': 0.0989999994635582, 'price': 0.05000000074505806, 'store and product hierarchy': 0.04500000178813934}
+
+h=28 top features:
+      feature  share                        group
+roll_mean_28 0.4002 recent sales (lags, rolling)
+ roll_std_28 0.1266 recent sales (lags, rolling)
+ roll_mean_7 0.0994 recent sales (lags, rolling)
+        wday 0.0576          calendar and events
+        dept 0.0506  store and product hierarchy
+roll_zero_28 0.0488 recent sales (lags, rolling)
+       price 0.0477                        price
+      lag_28 0.0244 recent sales (lags, rolling)
+group share: {'recent sales (lags, rolling)': 0.7360000014305115, 'calendar and events': 0.09799999743700027, 'store and product hierarchy': 0.09000000357627869, 'price': 0.07599999755620956}
+2026-10-24T11:18:09 [shap] h1: n=20000, top feature roll_mean_28, group share {'recent sales (lags, rolling)': 0.8065000176429749, 'calendar and events': 0.09849999845027924, 'price': 0.05009999871253967, 'store and product hierarchy': 0.04490000009536743}
+2026-10-24T11:18:09 [shap] h28: n=20000, top feature roll_mean_28, group share {'recent sales (lags, rolling)': 0.73580002784729, 'calendar and events': 0.09809999912977219, 'store and product hierarchy': 0.09019999951124191, 'price': 0.07580000162124634}
+2026-10-24T11:18:15 [decision] h=1: recommendations for 910,000 test cases by (priority, risk): {('P1', 'Low'): 333005, ('P3', 'High'): 221101, ('P3', 'Moderate'): 289093, ('P4', 'Low'): 66801}
+
+xgb h=1
+  ratio    tau     policy  cost_per_unit  understock_per_unit  overstock_per_unit  n_cases  coverage  reduction_vs_point  ci_low  ci_high  reduction_vs_global  g_ci_low  g_ci_high
+     1 0.5000     global         0.6687               0.3926              0.2761   910000    0.6682              0.0498  0.0483   0.0513                  NaN       NaN        NaN
+     1 0.5000 risk_aware         0.6488               0.4348              0.2140   910000    0.6519              0.0780  0.0756   0.0803               0.0297    0.0285     0.0307
+     2 0.6667     global         1.0570               0.7217              0.3354   910000    0.6834              0.0010  0.0009   0.0012                  NaN       NaN        NaN
+     2 0.6667 risk_aware         1.0120               0.5955              0.4165   910000    0.7343              0.0436  0.0425   0.0447               0.0426    0.0415     0.0437
+     4 0.8000     global         1.6200               0.9583              0.6617   910000    0.7841              0.0831  0.0810   0.0854                  NaN       NaN        NaN
+     4 0.8000 risk_aware         1.4746               0.7092              0.7653   910000    0.8221              0.1654  0.1630   0.1677               0.0898    0.0873     0.0921
+     8 0.8889     global         2.3780               1.3025              1.0756   910000    0.8806              0.2532  0.2491   0.2573                  NaN       NaN        NaN
+     8 0.8889 risk_aware         2.0275               0.8505              1.1770   910000    0.8955              0.3633  0.3599   0.3668               0.1474    0.1436     0.1515
+    16 0.9412     global         3.3674               1.6944              1.6729   910000    0.9376              0.4406  0.4345   0.4463                  NaN       NaN        NaN
+    16 0.9412 risk_aware         2.6849               0.9882              1.6968   910000    0.9434              0.5539  0.5499   0.5578               0.2027    0.1968     0.2089 
+            cases    mae  mean_demand  understock_rate   wape
+risk                                                        
+Low       399806  1.589        2.652            0.426  0.599
+Moderate  289093  0.595        0.449            0.314  1.327
+High      221101  0.233        0.138            0.109  1.685
+2026-10-24T11:18:19 [decision] h=28: recommendations for 910,000 test cases by (priority, risk): {('P1', 'Low'): 325447, ('P3', 'High'): 236313, ('P3', 'Moderate'): 282923, ('P4', 'Low'): 65317}
+
+xgb h=28
+  ratio    tau     policy  cost_per_unit  understock_per_unit  overstock_per_unit  n_cases  coverage  reduction_vs_point  ci_low  ci_high  reduction_vs_global  g_ci_low  g_ci_high
+     1 0.5000     global         0.7184               0.4559              0.2625   910000    0.6519              0.0602  0.0581   0.0625                  NaN       NaN        NaN
+     1 0.5000 risk_aware         0.7032               0.5218              0.1813   910000    0.6397              0.0802  0.0769   0.0837               0.0212    0.0197     0.0228
+     2 0.6667     global         1.1659               0.8458              0.3200   910000    0.6652              0.0005 -0.0000   0.0010                  NaN       NaN        NaN
+     2 0.6667 risk_aware         1.1118               0.6930              0.4188   910000    0.7202              0.0469  0.0450   0.0488               0.0464    0.0445     0.0486
+     4 0.8000     global         1.7918               1.0912              0.7006   910000    0.7839              0.0907  0.0882   0.0933                  NaN       NaN        NaN
+     4 0.8000 risk_aware         1.6424               0.8693              0.7731   910000    0.8104              0.1665  0.1629   0.1704               0.0834    0.0800     0.0871
+     8 0.8889     global         2.6656               1.5020              1.1635   910000    0.8804              0.2551  0.2503   0.2601                  NaN       NaN        NaN
+     8 0.8889 risk_aware         2.2896               1.0424              1.2471   910000    0.8868              0.3602  0.3552   0.3655               0.1411    0.1351     0.1470
+    16 0.9412     global         3.8380               2.0176              1.8204   910000    0.9373              0.4351  0.4279   0.4431                  NaN       NaN        NaN
+    16 0.9412 risk_aware         3.0715               1.2146              1.8569   910000    0.9382              0.5479  0.5420   0.5542               0.1997    0.1906     0.2087 
+            cases    mae  mean_demand  understock_rate   wape
+risk                                                        
+Low       390764  1.717        2.637            0.428  0.651
+Moderate  282923  0.660        0.510            0.329  1.295
+High      236313  0.318        0.193            0.149  1.651
+
+lstm h=1
+  ratio    tau     policy  cost_per_unit  understock_per_unit  overstock_per_unit  n_cases  coverage  reduction_vs_point  ci_low  ci_high  reduction_vs_global  g_ci_low  g_ci_high
+     1 0.5000     global         0.6655               0.3865              0.2790   910000    0.6703              0.0470  0.0456   0.0484                  NaN       NaN        NaN
+     1 0.5000 risk_aware         0.6461               0.4639              0.1822   910000    0.6514              0.0748  0.0723   0.0773               0.0291    0.0278     0.0303
+     2 0.6667     global         1.0481               0.7138              0.3343   910000    0.6839              0.0010  0.0008   0.0011                  NaN       NaN        NaN
+     2 0.6667 risk_aware         1.0057               0.5952              0.4106   910000    0.7332              0.0414  0.0405   0.0425               0.0405    0.0395     0.0415
+     4 0.8000     global         1.6017               0.9417              0.6601   910000    0.7826              0.0852  0.0831   0.0874                  NaN       NaN        NaN
+     4 0.8000 risk_aware         1.4652               0.7066              0.7585   910000    0.8212              0.1632  0.1612   0.1651               0.0853    0.0832     0.0874
+     8 0.8889     global         2.3454               1.2853              1.0601   910000    0.8797              0.2564  0.2525   0.2606                  NaN       NaN        NaN
+     8 0.8889 risk_aware         2.0138               0.8504              1.1634   910000    0.8949              0.3616  0.3585   0.3647               0.1414    0.1381     0.1448
+    16 0.9412     global         3.3113               1.6643              1.6470   910000    0.9373              0.4445  0.4388   0.4501                  NaN       NaN        NaN
+    16 0.9412 risk_aware         2.6685               0.9911              1.6774   910000    0.9423              0.5523  0.5486   0.5558               0.1941    0.1892     0.2000 
+            cases    mae  mean_demand  understock_rate   wape
+risk                                                        
+Low       397101  1.588        2.666            0.426  0.596
+Moderate  291021  0.589        0.449            0.315  1.310
+High      221878  0.227        0.139            0.109  1.627
+
+lstm h=28
+  ratio    tau     policy  cost_per_unit  understock_per_unit  overstock_per_unit  n_cases  coverage  reduction_vs_point  ci_low  ci_high  reduction_vs_global  g_ci_low  g_ci_high
+     1 0.5000     global         0.7159               0.4435              0.2725   910000    0.6572              0.0558  0.0540   0.0578                  NaN       NaN        NaN
+     1 0.5000 risk_aware         0.7004               0.5250              0.1754   910000    0.6380              0.0762  0.0730   0.0796               0.0216    0.0199     0.0233
+     2 0.6667     global         1.1524               0.8242              0.3281   910000    0.6699              0.0009  0.0005   0.0013                  NaN       NaN        NaN
+     2 0.6667 risk_aware         1.1067               0.7013              0.4053   910000    0.7163              0.0405  0.0391   0.0420               0.0397    0.0382     0.0412
+     4 0.8000     global         1.7683               1.0745              0.6938   910000    0.7801              0.0903  0.0880   0.0928                  NaN       NaN        NaN
+     4 0.8000 risk_aware         1.6368               0.8860              0.7508   910000    0.8057              0.1580  0.1548   0.1617               0.0744    0.0715     0.0776
+     8 0.8889     global         2.6212               1.4837              1.1375   910000    0.8783              0.2563  0.2517   0.2612                  NaN       NaN        NaN
+     8 0.8889 risk_aware         2.2830               1.0666              1.2164   910000    0.8837              0.3523  0.3477   0.3574               0.1290    0.1243     0.1345
+    16 0.9412     global         3.7621               1.9829              1.7792   910000    0.9365              0.4373  0.4304   0.4444                  NaN       NaN        NaN
+    16 0.9412 risk_aware         3.0619               1.2598              1.8022   910000    0.9364              0.5421  0.5363   0.5481               0.1861    0.1783     0.1940 
+            cases    mae  mean_demand  understock_rate   wape
+risk                                                        
+Low       383954  1.716        2.661            0.423  0.645
+Moderate  284682  0.674        0.529            0.330  1.275
+High      241364  0.308        0.199            0.153  1.550
+{
+  "focus_ratio": 8,
+  "ablation": {
+    "xgb": {
+      "point": 3.5785258522245504,
+      "global": 2.6655571899720054,
+      "risk_aware": 2.2895648239589192,
+      "reduction_risk_vs_point": 0.360193297881127,
+      "reduction_risk_vs_global": 0.14105582406094797
+    },
+    "lstm": {
+      "point": 3.524614903132062,
+      "global": 2.6211774821464515,
+      "risk_aware": 2.283003170159558,
+      "reduction_risk_vs_point": 0.3522687632822459,
+      "reduction_risk_vs_global": 0.12901618234182555
+    }
+  },
+  "bin_sensitivity": {
+    "5": 0.33627994476775824,
+    "10": 0.360193297881127,
+    "15": 0.3647630538002965,
+    "20": 0.3669886880482851
+  },
+  "window_stability": {
+    "window_1": {
+      "days": [
+        1851,
+        1880
+      ],
+      "n_cases": 300000,
+      "reduction_vs_point": 0.3512642835160712,
+      "ci_low": 0.34408113310438854,
+      "ci_high": 0.357845381797039
+    },
+    "window_2": {
+      "days": [
+        1881,
+        1910
+      ],
+      "n_cases": 300000,
+      "reduction_vs_point": 0.3574035832592123,
+      "ci_low": 0.3512737645448449,
+      "ci_high": 0.36385992462318134
+    },
+    "window_3": {
+      "days": [
+        1911,
+        1941
+      ],
+      "n_cases": 310000,
+      "reduction_vs_point": 0.37055031383936443,
+      "ci_low": 0.3634722232029005,
+      "ci_high": 0.3778736285411813
+    }
+  },
+  "paired_model_test": {
+    "n": 910000,
+    "mean_sq_err_xgb": 4.193262100219727,
+    "mean_sq_err_lstm": 4.134099960327148,
+    "lstm_lower_sq_err_share": 0.5580824175824176,
+    "wilcoxon_stat": 197113708544.0,
+    "p_value": 0.0
+  }
+}
+2026-10-24T11:18:27 [report] wrote Figure_1/2 (.png, .pdf), Table_1/2.csv and results_pack.md in results/
+exit 0
+2026-10-24T11:19:46 [decision] h=1: rule base fired for 910,000 test cases; rules never fired: [('High', 'High'), ('High', 'Moderate')]
+
+xgb h=1
+  ratio    tau     policy  cost_per_unit  understock_per_unit  overstock_per_unit  n_cases  coverage  reduction_vs_point  ci_low  ci_high  reduction_vs_global  g_ci_low  g_ci_high
+     1 0.5000     global         0.6687               0.3926              0.2761   910000    0.6682              0.0498  0.0483   0.0513                  NaN       NaN        NaN
+     1 0.5000 risk_aware         0.6488               0.4348              0.2140   910000    0.6519              0.0780  0.0756   0.0803               0.0297    0.0285     0.0307
+     2 0.6667     global         1.0570               0.7217              0.3354   910000    0.6834              0.0010  0.0009   0.0012                  NaN       NaN        NaN
+     2 0.6667 risk_aware         1.0120               0.5955              0.4165   910000    0.7343              0.0436  0.0425   0.0447               0.0426    0.0415     0.0437
+     4 0.8000     global         1.6200               0.9583              0.6617   910000    0.7841              0.0831  0.0810   0.0854                  NaN       NaN        NaN
+     4 0.8000 risk_aware         1.4746               0.7092              0.7653   910000    0.8221              0.1654  0.1630   0.1677               0.0898    0.0873     0.0921
+     8 0.8889     global         2.3780               1.3025              1.0756   910000    0.8806              0.2532  0.2491   0.2573                  NaN       NaN        NaN
+     8 0.8889 risk_aware         2.0275               0.8505              1.1770   910000    0.8955              0.3633  0.3599   0.3668               0.1474    0.1436     0.1515
+    16 0.9412     global         3.3674               1.6944              1.6729   910000    0.9376              0.4406  0.4345   0.4463                  NaN       NaN        NaN
+    16 0.9412 risk_aware         2.6849               0.9882              1.6968   910000    0.9434              0.5539  0.5499   0.5578               0.2027    0.1968     0.2089 
+            cases    mae  mean_demand  understock_rate   wape
+risk                                                        
+Low       399806  1.589        2.652            0.426  0.599
+Moderate  289093  0.595        0.449            0.314  1.327
+High      221101  0.233        0.138            0.109  1.685
+2026-10-24T11:19:50 [decision] h=28: rule base fired for 910,000 test cases; rules never fired: [('High', 'High'), ('High', 'Moderate')]
+
+xgb h=28
+  ratio    tau     policy  cost_per_unit  understock_per_unit  overstock_per_unit  n_cases  coverage  reduction_vs_point  ci_low  ci_high  reduction_vs_global  g_ci_low  g_ci_high
+     1 0.5000     global         0.7184               0.4559              0.2625   910000    0.6519              0.0602  0.0581   0.0625                  NaN       NaN        NaN
+     1 0.5000 risk_aware         0.7032               0.5218              0.1813   910000    0.6397              0.0802  0.0769   0.0837               0.0212    0.0197     0.0228
+     2 0.6667     global         1.1659               0.8458              0.3200   910000    0.6652              0.0005 -0.0000   0.0010                  NaN       NaN        NaN
+     2 0.6667 risk_aware         1.1118               0.6930              0.4188   910000    0.7202              0.0469  0.0450   0.0488               0.0464    0.0445     0.0486
+     4 0.8000     global         1.7918               1.0912              0.7006   910000    0.7839              0.0907  0.0882   0.0933                  NaN       NaN        NaN
+     4 0.8000 risk_aware         1.6424               0.8693              0.7731   910000    0.8104              0.1665  0.1629   0.1704               0.0834    0.0800     0.0871
+     8 0.8889     global         2.6656               1.5020              1.1635   910000    0.8804              0.2551  0.2503   0.2601                  NaN       NaN        NaN
+     8 0.8889 risk_aware         2.2896               1.0424              1.2471   910000    0.8868              0.3602  0.3552   0.3655               0.1411    0.1351     0.1470
+    16 0.9412     global         3.8380               2.0176              1.8204   910000    0.9373              0.4351  0.4279   0.4431                  NaN       NaN        NaN
+    16 0.9412 risk_aware         3.0715               1.2146              1.8569   910000    0.9382              0.5479  0.5420   0.5542               0.1997    0.1906     0.2087 
+            cases    mae  mean_demand  understock_rate   wape
+risk                                                        
+Low       390764  1.717        2.637            0.428  0.651
+Moderate  282923  0.660        0.510            0.329  1.295
+High      236313  0.318        0.193            0.149  1.651
+
+lstm h=1
+  ratio    tau     policy  cost_per_unit  understock_per_unit  overstock_per_unit  n_cases  coverage  reduction_vs_point  ci_low  ci_high  reduction_vs_global  g_ci_low  g_ci_high
+     1 0.5000     global         0.6655               0.3865              0.2790   910000    0.6703              0.0470  0.0456   0.0484                  NaN       NaN        NaN
+     1 0.5000 risk_aware         0.6461               0.4639              0.1822   910000    0.6514              0.0748  0.0723   0.0773               0.0291    0.0278     0.0303
+     2 0.6667     global         1.0481               0.7138              0.3343   910000    0.6839              0.0010  0.0008   0.0011                  NaN       NaN        NaN
+     2 0.6667 risk_aware         1.0057               0.5952              0.4106   910000    0.7332              0.0414  0.0405   0.0425               0.0405    0.0395     0.0415
+     4 0.8000     global         1.6017               0.9417              0.6601   910000    0.7826              0.0852  0.0831   0.0874                  NaN       NaN        NaN
+     4 0.8000 risk_aware         1.4652               0.7066              0.7585   910000    0.8212              0.1632  0.1612   0.1651               0.0853    0.0832     0.0874
+     8 0.8889     global         2.3454               1.2853              1.0601   910000    0.8797              0.2564  0.2525   0.2606                  NaN       NaN        NaN
+     8 0.8889 risk_aware         2.0138               0.8504              1.1634   910000    0.8949              0.3616  0.3585   0.3647               0.1414    0.1381     0.1448
+    16 0.9412     global         3.3113               1.6643              1.6470   910000    0.9373              0.4445  0.4388   0.4501                  NaN       NaN        NaN
+    16 0.9412 risk_aware         2.6685               0.9911              1.6774   910000    0.9423              0.5523  0.5486   0.5558               0.1941    0.1892     0.2000 
+            cases    mae  mean_demand  understock_rate   wape
+risk                                                        
+Low       397101  1.588        2.666            0.426  0.596
+Moderate  291021  0.589        0.449            0.315  1.310
+High      221878  0.227        0.139            0.109  1.627
+
+lstm h=28
+  ratio    tau     policy  cost_per_unit  understock_per_unit  overstock_per_unit  n_cases  coverage  reduction_vs_point  ci_low  ci_high  reduction_vs_global  g_ci_low  g_ci_high
+     1 0.5000     global         0.7159               0.4435              0.2725   910000    0.6572              0.0558  0.0540   0.0578                  NaN       NaN        NaN
+     1 0.5000 risk_aware         0.7004               0.5250              0.1754   910000    0.6380              0.0762  0.0730   0.0796               0.0216    0.0199     0.0233
+     2 0.6667     global         1.1524               0.8242              0.3281   910000    0.6699              0.0009  0.0005   0.0013                  NaN       NaN        NaN
+     2 0.6667 risk_aware         1.1067               0.7013              0.4053   910000    0.7163              0.0405  0.0391   0.0420               0.0397    0.0382     0.0412
+     4 0.8000     global         1.7683               1.0745              0.6938   910000    0.7801              0.0903  0.0880   0.0928                  NaN       NaN        NaN
+     4 0.8000 risk_aware         1.6368               0.8860              0.7508   910000    0.8057              0.1580  0.1548   0.1617               0.0744    0.0715     0.0776
+     8 0.8889     global         2.6212               1.4837              1.1375   910000    0.8783              0.2563  0.2517   0.2612                  NaN       NaN        NaN
+     8 0.8889 risk_aware         2.2830               1.0666              1.2164   910000    0.8837              0.3523  0.3477   0.3574               0.1290    0.1243     0.1345
+    16 0.9412     global         3.7621               1.9829              1.7792   910000    0.9365              0.4373  0.4304   0.4444                  NaN       NaN        NaN
+    16 0.9412 risk_aware         3.0619               1.2598              1.8022   910000    0.9364              0.5421  0.5363   0.5481               0.1861    0.1783     0.1940 
+            cases    mae  mean_demand  understock_rate   wape
+risk                                                        
+Low       383954  1.716        2.661            0.423  0.645
+Moderate  284682  0.674        0.529            0.330  1.275
+High      241364  0.308        0.199            0.153  1.550
+{
+  "focus_ratio": 8,
+  "ablation": {
+    "xgb": {
+      "point": 3.5785258522245504,
+      "global": 2.6655571899720054,
+      "risk_aware": 2.2895648239589192,
+      "reduction_risk_vs_point": 0.360193297881127,
+      "reduction_risk_vs_global": 0.14105582406094797
+    },
+    "lstm": {
+      "point": 3.524614903132062,
+      "global": 2.6211774821464515,
+      "risk_aware": 2.283003170159558,
+      "reduction_risk_vs_point": 0.3522687632822459,
+      "reduction_risk_vs_global": 0.12901618234182555
+    }
+  },
+  "bin_sensitivity": {
+    "5": 0.33627994476775824,
+    "10": 0.360193297881127,
+    "15": 0.3647630538002965,
+    "20": 0.3669886880482851
+  },
+  "window_stability": {
+    "window_1": {
+      "days": [
+        1851,
+        1880
+      ],
+      "n_cases": 300000,
+      "reduction_vs_point": 0.3512642835160712,
+      "ci_low": 0.34408113310438854,
+      "ci_high": 0.357845381797039
+    },
+    "window_2": {
+      "days": [
+        1881,
+        1910
+      ],
+      "n_cases": 300000,
+      "reduction_vs_point": 0.3574035832592123,
+      "ci_low": 0.3512737645448449,
+      "ci_high": 0.36385992462318134
+    },
+    "window_3": {
+      "days": [
+        1911,
+        1941
+      ],
+      "n_cases": 310000,
+      "reduction_vs_point": 0.37055031383936443,
+      "ci_low": 0.3634722232029005,
+      "ci_high": 0.3778736285411813
+    }
+  },
+  "paired_model_test": {
+    "n": 910000,
+    "mean_sq_err_xgb": 4.193262100219727,
+    "mean_sq_err_lstm": 4.134099960327148,
+    "lstm_lower_sq_err_share": 0.5580824175824176,
+    "wilcoxon_stat": 197113708544.0,
+    "p_value": 0.0
+  }
+}
+2026-10-24T11:19:57 [report] wrote Figure_1/2 (.png, .pdf), Table_1/2.csv and results_pack.md in results/

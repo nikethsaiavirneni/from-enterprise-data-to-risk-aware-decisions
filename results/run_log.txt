@@ -1,0 +1,25 @@
+2026-10-24T10:53:44 [env] python 3.12.10 on Windows-11-10.0.26300-SP0; gpu: NVIDIA GeForce RTX 3060 Laptop GPU, 6144 MiB; seed 42
+2026-10-24T10:53:44 [env] packages: numpy 2.5.4, pandas 3.1.0, scikit-learn 1.9.1, xgboost 3.4.1, shap 0.54.1, torch 2.11.0+cu128, scipy 1.18.1, matplotlib 3.11.2
+2026-10-24T10:53:44 [download] sales_train_evaluation.csv sha256 c21a519596680feb86f27a9e62f6c8b583f8be60c2c195f080ae8ca2990af2b7
+2026-10-24T10:53:44 [download] calendar.csv sha256 568d0fe5f41790142379698732908e4e57432c1c6396f3f59fb880a9c2b54231
+2026-10-24T10:53:44 [download] sell_prices.csv sha256 5c7cf045b1abbdc8d5007809c40b3682c5216075937f93e2cef01caddc4a30d9
+2026-10-24T10:53:51 [preprocess] 10000 of 30490 series, 15411012 rows after the on-shelf rule (20.8% of series-days dropped, 0 of them with sales)
+2026-10-24T10:54:41 [features] h=1: 15154455 rows, 23 features, split rows {'train': 13335174, 'val': 909281, 'test': 910000}
+2026-10-24T10:54:41 [features] h=28: 15154455 rows, 23 features, split rows {'train': 13335174, 'val': 909281, 'test': 910000}
+2026-10-24T10:57:17 [xgb] h=1 val: MAE 0.8963, RMSE 1.8906, WAPE 0.7305, RMSSE 0.7078 | naive RMSE 2.6754
+2026-10-24T10:57:17 [xgb] h=1 test: MAE 0.9437, RMSE 1.8233, WAPE 0.7037, RMSSE 0.7641 | naive RMSE 2.5085
+2026-10-24T10:57:17 [xgb] h=1 chosen config {'max_depth': 10, 'min_child_weight': 200, 'subsample': 0.7, 'colsample_bytree': 0.7}, 220 rounds, tuning seconds [32.6, 34.5, 36.9, 30.9]
+2026-10-24T10:59:11 [xgb] h=28 val: MAE 0.9971, RMSE 2.1360, WAPE 0.8127, RMSSE 0.7460 | naive RMSE 2.7716
+2026-10-24T10:59:11 [xgb] h=28 test: MAE 1.0251, RMSE 2.0477, WAPE 0.7644, RMSSE 0.7942 | naive RMSE 2.6442
+2026-10-24T10:59:11 [xgb] h=28 chosen config {'max_depth': 10, 'min_child_weight': 200, 'subsample': 0.7, 'colsample_bytree': 0.7}, 142 rounds, tuning seconds [14.5, 18.4, 28.1, 22.0]
+2026-10-24T11:08:07 [lstm] h=1 val: MAE 0.8923, RMSE 1.8998, WAPE 0.7273, RMSSE 0.7085
+2026-10-24T11:08:07 [lstm] h=1 test: MAE 0.9365, RMSE 1.8113, WAPE 0.6983, RMSSE 0.7636
+2026-10-24T11:08:07 [lstm] h=1 12 epochs, GPU peak 2593 MB (cap 4096), train 517s, params 24689
+2026-10-24T11:16:23 [lstm] h=28 val: MAE 0.9974, RMSE 2.1492, WAPE 0.8129, RMSSE 0.7482
+2026-10-24T11:16:23 [lstm] h=28 test: MAE 1.0168, RMSE 2.0332, WAPE 0.7582, RMSSE 0.7932
+2026-10-24T11:16:23 [lstm] h=28 12 epochs, GPU peak 2592 MB (cap 4096), train 488s, params 24689
+2026-10-24T11:18:09 [shap] h1: n=20000, top feature roll_mean_28, group share {'recent sales (lags, rolling)': 0.8065000176429749, 'calendar and events': 0.09849999845027924, 'price': 0.05009999871253967, 'store and product hierarchy': 0.04490000009536743}
+2026-10-24T11:18:09 [shap] h28: n=20000, top feature roll_mean_28, group share {'recent sales (lags, rolling)': 0.73580002784729, 'calendar and events': 0.09809999912977219, 'store and product hierarchy': 0.09019999951124191, 'price': 0.07580000162124634}
+2026-10-24T11:19:46 [decision] h=1: rule base fired for 910,000 test cases; rules never fired: [('High', 'High'), ('High', 'Moderate')]
+2026-10-24T11:19:50 [decision] h=28: rule base fired for 910,000 test cases; rules never fired: [('High', 'High'), ('High', 'Moderate')]
+2026-10-24T11:19:57 [report] wrote Figure_1/2 (.png, .pdf), Table_1/2.csv and results_pack.md in results/

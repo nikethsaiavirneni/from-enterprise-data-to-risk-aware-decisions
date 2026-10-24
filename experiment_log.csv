@@ -1,5 +1,0 @@
-time,model,horizon,seed,config,rounds,val_RMSE,test_RMSE,test_MAE,test_WAPE
-2026-10-23T16:27:47,xgboost,1,42,"{""max_depth"": 10, ""min_child_weight"": 200, ""subsample"": 0.7, ""colsample_bytree"": 0.7}",220,1.89055,1.82326,0.94373,0.70373
-2026-10-23T16:29:44,xgboost,28,42,"{""max_depth"": 10, ""min_child_weight"": 200, ""subsample"": 0.7, ""colsample_bytree"": 0.7}",142,2.13605,2.04775,1.02515,0.76444
-2026-10-23T16:54:51,lstm,1,42,"{""seq"": 28, ""hidden"": 64, ""emb"": 8, ""batch"": 256, ""lr"": 0.002, ""samples_per_epoch"": 2000000, ""patience"": 3}",12,1.89984,1.81127,0.9365,0.69834
-2026-10-23T17:06:56,lstm,28,42,"{""seq"": 28, ""hidden"": 64, ""emb"": 8, ""batch"": 256, ""lr"": 0.002, ""samples_per_epoch"": 2000000, ""patience"": 3}",12,2.1492,2.03325,1.01684,0.75824

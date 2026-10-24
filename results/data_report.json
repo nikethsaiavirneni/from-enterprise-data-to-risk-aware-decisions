@@ -1,0 +1,126 @@
+{
+  "data": {
+    "source": "M5 Forecasting Accuracy (community mirror github.com/Nixtla/m5-forecasts)",
+    "seed": 42,
+    "n_items": 1000,
+    "n_series": 10000,
+    "n_series_total": 30490,
+    "val_days": 91,
+    "test_days": 91,
+    "split": {
+      "train": {
+        "d_start": 1,
+        "d_end": 1759,
+        "date_start": "2011-01-29",
+        "date_end": "2015-11-22"
+      },
+      "val": {
+        "d_start": 1760,
+        "d_end": 1850,
+        "date_start": "2015-11-23",
+        "date_end": "2016-02-21"
+      },
+      "test": {
+        "d_start": 1851,
+        "d_end": 1941,
+        "date_start": "2016-02-22",
+        "date_end": "2016-05-22"
+      }
+    },
+    "rule": "keep series-day only if a price is listed in that week",
+    "series_days_total": 59181090,
+    "dropped_share": 0.20782673992655423,
+    "dropped_with_sales": 0,
+    "zero_share_all": 0.6799776584040612,
+    "zero_share_kept": 0.5960197626889499,
+    "rows_after_rule": 15411012,
+    "est_gb_sample": 2.049664728,
+    "est_gb_full": 6.235263442555807,
+    "mem_cap_gb": 5.0
+  },
+  "features": {
+    "lags": {
+      "1": [
+        1,
+        7,
+        14,
+        28
+      ],
+      "28": [
+        28,
+        35,
+        42,
+        56
+      ]
+    },
+    "warmup_days": 60,
+    "per_horizon": {
+      "1": {
+        "rows": 15154455,
+        "features": [
+          "lag_1",
+          "lag_7",
+          "lag_14",
+          "lag_28",
+          "roll_mean_7",
+          "roll_mean_28",
+          "roll_std_28",
+          "roll_zero_28",
+          "price",
+          "price_ratio_7",
+          "price_rel_hist",
+          "listed_days",
+          "wday",
+          "month",
+          "day_of_month",
+          "week_of_year",
+          "event_type",
+          "is_event",
+          "snap",
+          "dept",
+          "cat",
+          "store",
+          "state"
+        ],
+        "rows_per_split": {
+          "train": 13335174,
+          "val": 909281,
+          "test": 910000
+        }
+      },
+      "28": {
+        "rows": 15154455,
+        "features": [
+          "lag_28",
+          "lag_35",
+          "lag_42",
+          "lag_56",
+          "roll_mean_7",
+          "roll_mean_28",
+          "roll_std_28",
+          "roll_zero_28",
+          "price",
+          "price_ratio_7",
+          "price_rel_hist",
+          "listed_days",
+          "wday",
+          "month",
+          "day_of_month",
+          "week_of_year",
+          "event_type",
+          "is_event",
+          "snap",
+          "dept",
+          "cat",
+          "store",
+          "state"
+        ],
+        "rows_per_split": {
+          "train": 13335174,
+          "val": 909281,
+          "test": 910000
+        }
+      }
+    }
+  }
+}

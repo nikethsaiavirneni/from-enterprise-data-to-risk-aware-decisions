@@ -11,13 +11,9 @@ kaggle.json
 .env
 .env.*
 
-# Data and large regenerable outputs (rebuilt by the scripts in src/)
+# Raw and intermediate data (about 1 GB): rebuilt by `python src/data.py`, which also downloads M5.
+# Results, figures, tables, logs, saved models and predictions ARE committed.
 data/raw/*
 !data/raw/.gitkeep
 data/processed/
 data/features/
-models/
-results/predictions/
-results/decision_outputs/decision_recommendations_*.csv
-results/explanations/*.npy
-results/explanations/*.parquet

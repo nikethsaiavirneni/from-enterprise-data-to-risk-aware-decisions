@@ -1,5 +1,0 @@
-Forecast, SHAP, risk strata and rules form one auditable decision chain
-Calibration uses validation data only; the test window is scored once
-Risk-aware orders cut assumed stock cost 36% at 8:1 cost ratio
-A 28-day rolling mean nearly matches XGBoost; the decision layer adds the gain
-Open code and unit tests reproduce every table and figure

@@ -1,0 +1,9 @@
+demand_level,risk,priority,cases,horizon
+High,Low,P1,333005,1
+Low,High,P3,221101,1
+Low,Low,P4,66801,1
+Low,Moderate,P3,289093,1
+High,Low,P1,325447,28
+Low,High,P3,236313,28
+Low,Low,P4,65317,28
+Low,Moderate,P3,282923,28
